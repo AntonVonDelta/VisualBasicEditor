@@ -65,6 +65,7 @@
             this.mainTextEditor.AutoCMaxHeight = 9;
             this.mainTextEditor.BiDirectionality = ScintillaNET.BiDirectionalDisplayType.Disabled;
             this.mainTextEditor.CaretLineBackColor = System.Drawing.Color.Black;
+            this.mainTextEditor.CaretLineVisible = false;
             this.mainTextEditor.Dock = System.Windows.Forms.DockStyle.Left;
             this.mainTextEditor.LexerName = null;
             this.mainTextEditor.Location = new System.Drawing.Point(0, 0);

@@ -13,11 +13,8 @@ namespace VisualBasicDebugger.Parser {
             public string Type { get; set; }
 
             public string ParentFunction { get; set; }
-            public int Line { get; set; }
-
-            public override string ToString() {
-                return $"In function {ParentFunction} on line {Line}, Name {Name}, Type {Type ?? "null"}";
-            }
+            public int StartPosition { get; set; }
+            public int EndPosition { get; set; }
         }
 
         public List<VariableInfo> Result { get => _result; }
@@ -32,9 +29,10 @@ namespace VisualBasicDebugger.Parser {
         public override void EnterVariableSubStmt([NotNull] VisualBasic6Parser.VariableSubStmtContext context) {
             _result.Add(new VariableInfo() {
                 Name = context.ambiguousIdentifier().GetText(),
-                Type = (context.asTypeClause()?.type_().baseType().GetText())??"Variant",
+                Type = (context.asTypeClause()?.type_().baseType().GetText()) ?? "Variant",
                 ParentFunction = currentFunctionName,
-                Line = context.start.Line
+                StartPosition = context.start.StartIndex,
+                EndPosition = context.start.StopIndex
             });
         }
 
