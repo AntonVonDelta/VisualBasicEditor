@@ -10,6 +10,8 @@ using VisualBasicDebugger.Parser.Utils;
 using System.Linq;
 using System.Drawing;
 using ScintillaNET;
+using System.Threading.Tasks;
+using VisualBasicDebugger.Parser.Coloring;
 
 namespace VisualBasicDebugger {
     public partial class Form1 : Form {
@@ -24,10 +26,10 @@ namespace VisualBasicDebugger {
             mainTextEditor.Styles[1].ForeColor = Color.Blue;
 
             // Variables
-            mainTextEditor.Styles[2].ForeColor = Color.Brown;
+            mainTextEditor.Styles[2].ForeColor = Color.FromArgb(33, 170, 216);
 
             // Function calls
-            mainTextEditor.Styles[3].ForeColor = Color.Brown;
+            mainTextEditor.Styles[3].ForeColor = Color.SaddleBrown;
 
             // Unused variable indicator
             mainTextEditor.Indicators[0].Style = IndicatorStyle.StraightBox;
@@ -45,37 +47,41 @@ namespace VisualBasicDebugger {
             var lexer = new VisualBasic6Lexer(charStream);
             CommonTokenStream tokenStream;
             VisualBasic6Parser.StartRuleContext tree;
+            VisualBasic6Parser parser;
 
-            //lexer.AddErrorListener(new LexerCustomErrorHandler());
             tokenStream = new CommonTokenStream(lexer);
-
-            var parser = new VisualBasic6Parser(tokenStream);
-            //parser.AddErrorListener(new ParserCustomErrorHandler());
-
+            parser = new VisualBasic6Parser(tokenStream);
             tree = parser.startRule();
-
-            //if (tree.exception != null) {
-            //    return null;
-            //}
 
             return tree;
         }
 
-        private void StartCodeAnalysis() {
-            VisualBasic6Parser.StartRuleContext tree = GetTree(mainTextEditor.Text);
-            
-            // Reset last analysis
-            unusedVariables = null;
+        private async void StartCodeAnalysis() {
+            while (true) {
+                string input;
+                VisualBasic6Parser.StartRuleContext tree;
 
-            if (tree == null) return;
+                input = mainTextEditor.Text;
+                tree = GetTree(mainTextEditor.Text);
 
-            try {
-                var parserTreeWalker = new ParseTreeWalker();
-                var unusedVariablesListener = new UnusedVariableListener();
-                parserTreeWalker.Walk(unusedVariablesListener, tree);
+                // Reset last analysis
+                unusedVariables = null;
 
-                unusedVariables = unusedVariablesListener.Result;
-            } catch { }
+                if (tree == null) return;
+
+                try {
+                    var parserTreeWalker = new ParseTreeWalker();
+                    var unusedVariablesListener = new UnusedVariableListener();
+                    parserTreeWalker.Walk(unusedVariablesListener, tree);
+
+                    unusedVariables = unusedVariablesListener.Result;
+                } catch { }
+
+                while (true) {
+                    await Task.Delay(5000);
+                    if (input != mainTextEditor.Text) break;
+                }
+            }
         }
 
         private string GetUnusedVariableAtPosition(int position) {
@@ -102,16 +108,14 @@ namespace VisualBasicDebugger {
             //mainTextEditor.Font.si
 
             mainTextEditor.StyleNeeded += (object eventSender, StyleNeededEventArgs eventArgs) => {
-                ColoringListener coloringListener = new ColoringListener(mainTextEditor);
+                ColoringVisitor coloringVisitor = new ColoringVisitor(mainTextEditor, mainTextEditor.LineFromPosition(mainTextEditor.GetEndStyled()), mainTextEditor.LineFromPosition(eventArgs.Position));
                 VisualBasic6Parser.StartRuleContext tree = GetTree(mainTextEditor.Text);
 
                 if (tree == null) return;
 
                 try {
-                    var parserTreeWalker = new ParseTreeWalker();
-
                     // Apply our coloring
-                    parserTreeWalker.Walk(coloringListener, tree);
+                    coloringVisitor.Visit(tree);
                 } catch { }
 
                 // Process data for unused variables
@@ -121,10 +125,6 @@ namespace VisualBasicDebugger {
                     mainTextEditor.IndicatorCurrent = 0;
                     mainTextEditor.IndicatorFillRange(item.StartPosition, item.EndPosition - item.StartPosition + 1);
                 }
-            };
-
-            mainTextEditor.TextChanged += (object eventSender, EventArgs eventArgs) => {
-                StartCodeAnalysis();
             };
 
             mainTextEditor.DwellStart += (object eventSender, DwellEventArgs eventArgs) => {

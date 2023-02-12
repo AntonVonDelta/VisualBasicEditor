@@ -65,10 +65,8 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Parser\LexerCustomErrorHandler.cs" />
-    <Compile Include="Parser\ParserCustomErrorHandler.cs" />
-    <Compile Include="Parser\SyntaxParsingException.cs" />
-    <Compile Include="Parser\Tracer\ColoringListener.cs" />
+    <Compile Include="Parser\Coloring\ColoringListener.cs" />
+    <Compile Include="Parser\Coloring\ColoringVisitor.cs" />
     <Compile Include="Parser\Tracer\TraceForEach.cs" />
     <Compile Include="Parser\Tracer\TracerLetStmt.cs" />
     <Compile Include="Utils\CheckpointStack.cs" />
