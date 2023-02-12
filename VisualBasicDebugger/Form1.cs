@@ -160,29 +160,6 @@ namespace VisualBasicDebugger {
             };
         }
 
-        private void btnUnusedVariables_Click(object sender, EventArgs e) {
-            //var input = txtDocument.Text;
-            //var charStream = new CaseInsensitiveStream(input);
-            //var lexer = new VisualBasic6Lexer(charStream);
-            //var tokenStream = new CommonTokenStream(lexer);
-
-            //var parser = new VisualBasic6Parser(tokenStream);
-            //var tree = parser.startRule();
-
-            //var parserTreeWalker = new ParseTreeWalker();
-            //var unusedVariablesListener = new UnusedVariableListener();
-            //parserTreeWalker.Walk(unusedVariablesListener, tree);
-
-            //listView1.Items.Clear();
-            //foreach (var item in unusedVariablesListener.Result) {
-            //    var listItem = new ListViewItem(item.Line.ToString());
-
-            //    listItem.SubItems.Add(item.Name);
-            //    listItem.SubItems.Add(item.Type);
-            //    listView1.Items.Add(listItem);
-            //}
-        }
-
         private void btnGenerateTraceCode_Click(object sender, EventArgs e) {
             //var input = txtDocument.Text;
             //var charStream = new CaseInsensitiveStream(input);
@@ -215,21 +192,6 @@ namespace VisualBasicDebugger {
             //}
 
             //textBox2.Text = finalCode;
-        }
-
-        private void btnColorize_Click(object sender, EventArgs e) {
-            //ColoringListener coloringListener = new ColoringListener(txtDocument);
-
-            //var input = txtDocument.Text;
-            //var charStream = new CaseInsensitiveStream(input);
-            //var lexer = new VisualBasic6Lexer(charStream);
-            //var tokenStream = new CommonTokenStream(lexer);
-
-            //var parser = new VisualBasic6Parser(tokenStream);
-            //var tree = parser.startRule();
-
-            //var parserTreeWalker = new ParseTreeWalker();
-            //parserTreeWalker.Walk(coloringListener, tree);
         }
 
         private static string GetIndexesForList(List<TraceVariableData> list) {
