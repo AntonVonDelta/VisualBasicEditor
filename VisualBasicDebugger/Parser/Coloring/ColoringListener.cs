@@ -28,7 +28,7 @@ namespace VisualBasicDebugger.Parser.Coloring {
         }
 
         private bool ShouldStyle(int line) {
-            return _startLine <= line && line <= _stopLine;
+            return true;// _startLine <= line && line <= _stopLine;
         }
 
         private void AddFunctionScope(VisualBasic6Parser.FunctionStmtContext context) {
@@ -59,6 +59,10 @@ namespace VisualBasicDebugger.Parser.Coloring {
             AddFunctionScope(context);
 
             if (!ShouldStyle(context.start.Line)) return;
+
+            // Clear previous styling
+            _doc.StartStyling(context.start.StartIndex);
+            _doc.SetStyling(context.GetText().Length, 0);
 
             _doc.StartStyling(context.start.StartIndex);
             _doc.SetStyling(context.FUNCTION().GetText().Length, 1);

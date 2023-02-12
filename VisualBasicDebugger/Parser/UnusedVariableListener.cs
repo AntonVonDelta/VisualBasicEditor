@@ -15,6 +15,10 @@ namespace VisualBasicDebugger.Parser {
             public string ParentFunction { get; set; }
             public int StartPosition { get; set; }
             public int EndPosition { get; set; }
+
+            public override string ToString() {
+                return $"{Name} as {Type}, {StartPosition}-{EndPosition}";
+            }
         }
 
         public List<VariableInfo> Result { get => _result; }

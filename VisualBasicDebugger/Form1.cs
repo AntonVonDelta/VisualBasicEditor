@@ -16,6 +16,8 @@ using VisualBasicDebugger.Parser.Coloring;
 namespace VisualBasicDebugger {
     public partial class Form1 : Form {
         private List<UnusedVariableListener.VariableInfo> unusedVariables;
+        private Tuple<string, VisualBasic6Parser.StartRuleContext> cachedTree;
+        private Task<VisualBasic6Parser.StartRuleContext> _stylingTask;
 
         public Form1() {
             InitializeComponent();
@@ -41,8 +43,9 @@ namespace VisualBasicDebugger {
             mainTextEditor.Styles[Style.CallTip].BackColor = SystemColors.Info;
         }
 
-        private VisualBasic6Parser.StartRuleContext GetTree(string inputData) {
-            var input = mainTextEditor.Text;
+        private async Task<VisualBasic6Parser.StartRuleContext> GetTree(string input) {
+            //if (cachedTree != null && cachedTree.Item1 == input) return cachedTree.Item2;
+
             var charStream = new CaseInsensitiveStream(input);
             var lexer = new VisualBasic6Lexer(charStream);
             CommonTokenStream tokenStream;
@@ -51,7 +54,12 @@ namespace VisualBasicDebugger {
 
             tokenStream = new CommonTokenStream(lexer);
             parser = new VisualBasic6Parser(tokenStream);
-            tree = parser.startRule();
+
+            tree = await Task.Run(() => {
+                return parser.startRule();
+            });
+
+            cachedTree = new Tuple<string, VisualBasic6Parser.StartRuleContext>(input, tree);
 
             return tree;
         }
@@ -62,7 +70,7 @@ namespace VisualBasicDebugger {
                 VisualBasic6Parser.StartRuleContext tree;
 
                 input = mainTextEditor.Text;
-                tree = GetTree(mainTextEditor.Text);
+                tree = await GetTree(mainTextEditor.Text);
 
                 // Reset last analysis
                 unusedVariables = null;
@@ -78,9 +86,43 @@ namespace VisualBasicDebugger {
                 } catch { }
 
                 while (true) {
-                    await Task.Delay(5000);
+                    await Task.Delay(1000);
                     if (input != mainTextEditor.Text) break;
                 }
+            }
+        }
+
+        private async void StartCodeStyling(StyleNeededEventArgs eventArgs) {
+            var input = mainTextEditor.Text;
+            var inputLength = mainTextEditor.TextLength;
+            var startLine = mainTextEditor.LineFromPosition(mainTextEditor.GetEndStyled());
+            var stopLine = eventArgs.Position;
+            VisualBasic6Parser.StartRuleContext tree;
+            ColoringListener coloringListener = new ColoringListener(mainTextEditor, startLine, stopLine);
+
+            if (_stylingTask != null && !_stylingTask.IsCompleted) return;
+
+            _stylingTask = GetTree(input);
+            tree = await _stylingTask;
+
+            if (tree == null) return;
+
+            try {
+                var parserTreeWalker = new ParseTreeWalker();
+
+                // Apply our coloring
+                parserTreeWalker.Walk(coloringListener, tree);
+            } catch { }
+
+            // Process data for unused variables
+            mainTextEditor.IndicatorClearRange(0, inputLength);
+
+            if (unusedVariables == null) return;
+            Console.WriteLine($"{unusedVariables[0]}");
+
+            foreach (var item in unusedVariables) {
+                mainTextEditor.IndicatorCurrent = 0;
+                mainTextEditor.IndicatorFillRange(item.StartPosition, item.EndPosition - item.StartPosition + 1);
             }
         }
 
@@ -108,23 +150,7 @@ namespace VisualBasicDebugger {
             //mainTextEditor.Font.si
 
             mainTextEditor.StyleNeeded += (object eventSender, StyleNeededEventArgs eventArgs) => {
-                ColoringVisitor coloringVisitor = new ColoringVisitor(mainTextEditor, mainTextEditor.LineFromPosition(mainTextEditor.GetEndStyled()), mainTextEditor.LineFromPosition(eventArgs.Position));
-                VisualBasic6Parser.StartRuleContext tree = GetTree(mainTextEditor.Text);
-
-                if (tree == null) return;
-
-                try {
-                    // Apply our coloring
-                    coloringVisitor.Visit(tree);
-                } catch { }
-
-                // Process data for unused variables
-                mainTextEditor.IndicatorClearRange(0, mainTextEditor.TextLength);
-                if (unusedVariables == null) return;
-                foreach (var item in unusedVariables) {
-                    mainTextEditor.IndicatorCurrent = 0;
-                    mainTextEditor.IndicatorFillRange(item.StartPosition, item.EndPosition - item.StartPosition + 1);
-                }
+                StartCodeStyling(eventArgs);
             };
 
             mainTextEditor.DwellStart += (object eventSender, DwellEventArgs eventArgs) => {
