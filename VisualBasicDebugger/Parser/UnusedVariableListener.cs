@@ -27,9 +27,16 @@ namespace VisualBasicDebugger.Parser {
         }
 
         public override void EnterVariableSubStmt([NotNull] VisualBasic6Parser.VariableSubStmtContext context) {
+            if (context.asTypeClause() != null && context.asTypeClause().type_() == null)
+                throw new SyntaxParsingException(
+                    context.asTypeClause().start.Line,
+                    context.asTypeClause().start.StartIndex,
+                    context.asTypeClause().start.StopIndex,
+                    context.asTypeClause().GetText(), "Variable was not fully declared");
+
             _result.Add(new VariableInfo() {
                 Name = context.ambiguousIdentifier().GetText(),
-                Type = (context.asTypeClause()?.type_().baseType().GetText()) ?? "Variant",
+                Type = (context.asTypeClause()?.type_().GetText()) ?? "Variant",
                 ParentFunction = currentFunctionName,
                 StartPosition = context.start.StartIndex,
                 EndPosition = context.start.StopIndex

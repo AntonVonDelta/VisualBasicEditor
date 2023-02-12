@@ -29,7 +29,7 @@ namespace VisualBasicDebugger.Parser.Tracer {
             // Add arguments to scoped variables
             currentFunction.ScopedVariables.AddCheckpoint();
             foreach (var arg in context.argList().arg()) {
-                var argType = arg.asTypeClause().type_().baseType().GetText();
+                var argType = arg.asTypeClause().type_().GetText();
 
                 currentFunction.ScopedVariables.Add(new VariableData() {
                     Name = arg.ambiguousIdentifier().GetText(),
@@ -88,7 +88,7 @@ namespace VisualBasicDebugger.Parser.Tracer {
 
         public override object VisitVariableSubStmt(VisualBasic6Parser.VariableSubStmtContext context) {
             var variableName = context.ambiguousIdentifier().GetText();
-            var variableType = (context.asTypeClause()?.type_().baseType().GetText()) ?? "Variant";
+            var variableType = (context.asTypeClause()?.type_().GetText()) ?? "Variant";
 
             _currentTrace.ParentFunction.ScopedVariables.Add(new VariableData() {
                 Name = variableName,
@@ -96,10 +96,6 @@ namespace VisualBasicDebugger.Parser.Tracer {
             });
 
             return null;
-        }
-
-        public static bool IsTraceable(string type) {
-            return Enum.TryParse<VariableType>(type, out _);
         }
     }
 }

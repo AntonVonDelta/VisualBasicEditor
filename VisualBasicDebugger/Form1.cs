@@ -30,8 +30,8 @@ namespace VisualBasicDebugger {
             mainTextEditor.Styles[3].ForeColor = Color.Brown;
 
             // Unused variable indicator
-            mainTextEditor.Indicators[0].Style = IndicatorStyle.Plain;
-            mainTextEditor.Indicators[0].ForeColor = Color.Blue;
+            mainTextEditor.Indicators[0].Style = IndicatorStyle.StraightBox;
+            mainTextEditor.Indicators[0].ForeColor = Color.Brown;
 
             mainTextEditor.MouseDwellTime = 400;
             mainTextEditor.Styles[Style.CallTip].SizeF = 8.25f;
@@ -39,20 +39,43 @@ namespace VisualBasicDebugger {
             mainTextEditor.Styles[Style.CallTip].BackColor = SystemColors.Info;
         }
 
-        private void StartCodeAnalysis() {
+        private VisualBasic6Parser.StartRuleContext GetTree(string inputData) {
             var input = mainTextEditor.Text;
             var charStream = new CaseInsensitiveStream(input);
             var lexer = new VisualBasic6Lexer(charStream);
-            var tokenStream = new CommonTokenStream(lexer);
+            CommonTokenStream tokenStream;
+            VisualBasic6Parser.StartRuleContext tree;
+
+            //lexer.AddErrorListener(new LexerCustomErrorHandler());
+            tokenStream = new CommonTokenStream(lexer);
 
             var parser = new VisualBasic6Parser(tokenStream);
-            var tree = parser.startRule();
+            //parser.AddErrorListener(new ParserCustomErrorHandler());
 
-            var parserTreeWalker = new ParseTreeWalker();
-            var unusedVariablesListener = new UnusedVariableListener();
-            parserTreeWalker.Walk(unusedVariablesListener, tree);
+            tree = parser.startRule();
 
-            unusedVariables = unusedVariablesListener.Result;
+            //if (tree.exception != null) {
+            //    return null;
+            //}
+
+            return tree;
+        }
+
+        private void StartCodeAnalysis() {
+            VisualBasic6Parser.StartRuleContext tree = GetTree(mainTextEditor.Text);
+            
+            // Reset last analysis
+            unusedVariables = null;
+
+            if (tree == null) return;
+
+            try {
+                var parserTreeWalker = new ParseTreeWalker();
+                var unusedVariablesListener = new UnusedVariableListener();
+                parserTreeWalker.Walk(unusedVariablesListener, tree);
+
+                unusedVariables = unusedVariablesListener.Result;
+            } catch { }
         }
 
         private string GetUnusedVariableAtPosition(int position) {
@@ -73,30 +96,31 @@ namespace VisualBasicDebugger {
         }
 
         private void Form1_Load(object sender, EventArgs e) {
+            SetStyles();
             StartCodeAnalysis();
+
+            //mainTextEditor.Font.si
 
             mainTextEditor.StyleNeeded += (object eventSender, StyleNeededEventArgs eventArgs) => {
                 ColoringListener coloringListener = new ColoringListener(mainTextEditor);
+                VisualBasic6Parser.StartRuleContext tree = GetTree(mainTextEditor.Text);
 
-                var input = mainTextEditor.Text;
-                var charStream = new CaseInsensitiveStream(input);
-                var lexer = new VisualBasic6Lexer(charStream);
-                var tokenStream = new CommonTokenStream(lexer);
+                if (tree == null) return;
 
-                var parser = new VisualBasic6Parser(tokenStream);
-                var tree = parser.startRule();
+                try {
+                    var parserTreeWalker = new ParseTreeWalker();
 
-                var parserTreeWalker = new ParseTreeWalker();
-                parserTreeWalker.Walk(coloringListener, tree);
-
+                    // Apply our coloring
+                    parserTreeWalker.Walk(coloringListener, tree);
+                } catch { }
 
                 // Process data for unused variables
+                mainTextEditor.IndicatorClearRange(0, mainTextEditor.TextLength);
                 if (unusedVariables == null) return;
                 foreach (var item in unusedVariables) {
                     mainTextEditor.IndicatorCurrent = 0;
-                    mainTextEditor.IndicatorFillRange(item.StartPosition, item.EndPosition - item.StartPosition);
+                    mainTextEditor.IndicatorFillRange(item.StartPosition, item.EndPosition - item.StartPosition + 1);
                 }
-
             };
 
             mainTextEditor.TextChanged += (object eventSender, EventArgs eventArgs) => {
