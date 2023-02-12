@@ -15,7 +15,6 @@ using VisualBasicDebugger.Parser.Coloring;
 
 namespace VisualBasicDebugger {
     public partial class Form1 : Form {
-        private List<UnusedVariableListener.VariableInfo> unusedVariables;
         private Tuple<string, VisualBasic6Parser.StartRuleContext> cachedTree;
         private Task<VisualBasic6Parser.StartRuleContext> _stylingTask;
 
@@ -44,24 +43,28 @@ namespace VisualBasicDebugger {
         }
 
         private async Task<VisualBasic6Parser.StartRuleContext> GetTree(string input) {
-            //if (cachedTree != null && cachedTree.Item1 == input) return cachedTree.Item2;
+            if (cachedTree != null && cachedTree.Item1 == input) return cachedTree.Item2;
 
-            var charStream = new CaseInsensitiveStream(input);
-            var lexer = new VisualBasic6Lexer(charStream);
-            CommonTokenStream tokenStream;
-            VisualBasic6Parser.StartRuleContext tree;
-            VisualBasic6Parser parser;
+            try {
+                var charStream = new CaseInsensitiveStream(input);
+                var lexer = new VisualBasic6Lexer(charStream);
+                CommonTokenStream tokenStream;
+                VisualBasic6Parser.StartRuleContext tree;
+                VisualBasic6Parser parser;
 
-            tokenStream = new CommonTokenStream(lexer);
-            parser = new VisualBasic6Parser(tokenStream);
+                tokenStream = new CommonTokenStream(lexer);
+                parser = new VisualBasic6Parser(tokenStream);
 
-            tree = await Task.Run(() => {
-                return parser.startRule();
-            });
+                tree = await Task.Run(() => {
+                    return parser.startRule();
+                });
 
-            cachedTree = new Tuple<string, VisualBasic6Parser.StartRuleContext>(input, tree);
+                cachedTree = new Tuple<string, VisualBasic6Parser.StartRuleContext>(input, tree);
 
-            return tree;
+                return tree;
+            } catch { }
+
+            return null;
         }
 
         private async void StartCodeAnalysis() {
@@ -70,23 +73,30 @@ namespace VisualBasicDebugger {
                 VisualBasic6Parser.StartRuleContext tree;
 
                 input = mainTextEditor.Text;
-                tree = await GetTree(mainTextEditor.Text);
-
-                // Reset last analysis
-                unusedVariables = null;
-
+                tree = await GetTree(input);
                 if (tree == null) return;
 
+                // Process data for unused variables
+                mainTextEditor.IndicatorClearRange(0, mainTextEditor.TextLength);
+
                 try {
+
                     var parserTreeWalker = new ParseTreeWalker();
                     var unusedVariablesListener = new UnusedVariableListener();
                     parserTreeWalker.Walk(unusedVariablesListener, tree);
 
-                    unusedVariables = unusedVariablesListener.Result;
-                } catch { }
+                    if (unusedVariablesListener.Result != null) {
+                        foreach (var item in unusedVariablesListener.Result) {
+                            mainTextEditor.IndicatorCurrent = 0;
+                            mainTextEditor.IndicatorFillRange(item.StartPosition, item.EndPosition - item.StartPosition + 1);
+                        }
+                    }
+                } catch {
+
+                }
 
                 while (true) {
-                    await Task.Delay(1000);
+                    await Task.Delay(2000);
                     if (input != mainTextEditor.Text) break;
                 }
             }
@@ -103,8 +113,8 @@ namespace VisualBasicDebugger {
             if (_stylingTask != null && !_stylingTask.IsCompleted) return;
 
             _stylingTask = GetTree(input);
-            tree = await _stylingTask;
 
+            tree = await _stylingTask;
             if (tree == null) return;
 
             try {
@@ -113,17 +123,6 @@ namespace VisualBasicDebugger {
                 // Apply our coloring
                 parserTreeWalker.Walk(coloringListener, tree);
             } catch { }
-
-            // Process data for unused variables
-            mainTextEditor.IndicatorClearRange(0, inputLength);
-
-            if (unusedVariables == null) return;
-            Console.WriteLine($"{unusedVariables[0]}");
-
-            foreach (var item in unusedVariables) {
-                mainTextEditor.IndicatorCurrent = 0;
-                mainTextEditor.IndicatorFillRange(item.StartPosition, item.EndPosition - item.StartPosition + 1);
-            }
         }
 
         private string GetUnusedVariableAtPosition(int position) {
@@ -146,8 +145,6 @@ namespace VisualBasicDebugger {
         private void Form1_Load(object sender, EventArgs e) {
             SetStyles();
             StartCodeAnalysis();
-
-            //mainTextEditor.Font.si
 
             mainTextEditor.StyleNeeded += (object eventSender, StyleNeededEventArgs eventArgs) => {
                 StartCodeStyling(eventArgs);
