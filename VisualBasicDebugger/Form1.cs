@@ -103,18 +103,16 @@ namespace VisualBasicDebugger {
         }
 
         private async void StartCodeStyling(StyleNeededEventArgs eventArgs) {
-            var input = mainTextEditor.Text;
-            var inputLength = mainTextEditor.TextLength;
             var startLine = mainTextEditor.LineFromPosition(mainTextEditor.GetEndStyled());
-            var stopLine = eventArgs.Position;
+            var stopLine = mainTextEditor.LineFromPosition(eventArgs.Position);
             VisualBasic6Parser.StartRuleContext tree;
             ColoringListener coloringListener = new ColoringListener(mainTextEditor, startLine, stopLine);
 
             if (_stylingTask != null && !_stylingTask.IsCompleted) return;
 
-            _stylingTask = GetTree(input);
-
+            _stylingTask = GetTree(mainTextEditor.Text);
             tree = await _stylingTask;
+
             if (tree == null) return;
 
             try {
@@ -123,6 +121,13 @@ namespace VisualBasicDebugger {
                 // Apply our coloring
                 parserTreeWalker.Walk(coloringListener, tree);
             } catch { }
+        }
+
+        private void SetChangeHistory(int changeHistory) {
+            // This is needed for history changes to work
+            mainTextEditor.EmptyUndoBuffer();
+
+            mainTextEditor.DirectMessage(2780, new IntPtr(changeHistory), IntPtr.Zero);
         }
 
         private string GetUnusedVariableAtPosition(int position) {
@@ -158,9 +163,11 @@ namespace VisualBasicDebugger {
         private void Form1_Load(object sender, EventArgs e) {
             SetStyles();
             StartCodeAnalysis();
+            UpdateLineNumbers();
 
-            // Set line numbering margin width
-            mainTextEditor.Margins[0].Width = 35;
+            SetChangeHistory(3);
+
+            mainTextEditor.Margins[1].Width = 20;
 
             mainTextEditor.StyleNeeded += (object eventSender, StyleNeededEventArgs eventArgs) => {
                 StartCodeStyling(eventArgs);

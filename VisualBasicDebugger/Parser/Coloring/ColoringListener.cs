@@ -55,6 +55,21 @@ namespace VisualBasicDebugger.Parser.Coloring {
             });
         }
 
+        private void AddSubScope(VisualBasic6Parser.SubStmtContext context) {
+            _scope = new CheckpointStack<VariableData>();
+            _scope.AddCheckpoint();
+
+            // Add arguments to scoped variables
+            foreach (var arg in context.argList().arg()) {
+                var argType = arg.asTypeClause().type_().GetText();
+
+                _scope.Add(new VariableData() {
+                    Name = arg.ambiguousIdentifier().GetText(),
+                    Type = argType
+                });
+            }
+        }
+
         public override void EnterFunctionStmt(VisualBasic6Parser.FunctionStmtContext context) {
             AddFunctionScope(context);
 
@@ -77,6 +92,25 @@ namespace VisualBasicDebugger.Parser.Coloring {
 
             _doc.StartStyling(context.END_FUNCTION().Symbol.StartIndex);
             _doc.SetStyling(context.END_FUNCTION().GetText().Length, 1);
+        }
+
+        public override void EnterSubStmt(VisualBasic6Parser.SubStmtContext context) {
+            AddSubScope(context);
+
+            if (!ShouldStyle(context.start.Line)) return;
+
+            // Clear previous styling
+            _doc.StartStyling(context.start.StartIndex);
+            _doc.SetStyling(context.GetText().Length, 0);
+
+            _doc.StartStyling(context.start.StartIndex);
+            _doc.SetStyling(context.SUB().GetText().Length, 1);
+
+            _doc.StartStyling(context.ambiguousIdentifier().start.StartIndex);
+            _doc.SetStyling(context.ambiguousIdentifier().GetText().Length, 3);
+
+            _doc.StartStyling(context.END_SUB().Symbol.StartIndex);
+            _doc.SetStyling(context.END_SUB().GetText().Length, 1);
         }
 
         public override void EnterBlock(VisualBasic6Parser.BlockContext context) {
@@ -160,6 +194,13 @@ namespace VisualBasicDebugger.Parser.Coloring {
 
             _doc.StartStyling(context.start.StartIndex);
             _doc.SetStyling(context.ambiguousIdentifier().GetText().Length, 3);
+        }
+
+        public override void EnterGoToStmt(VisualBasic6Parser.GoToStmtContext context) {
+            if (!ShouldStyle(context.start.Line)) return;
+
+            _doc.StartStyling(context.start.StartIndex);
+            _doc.SetStyling(context.GOTO().GetText().Length, 1);
         }
     }
 }
