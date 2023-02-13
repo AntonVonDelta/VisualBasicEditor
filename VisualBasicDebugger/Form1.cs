@@ -192,40 +192,6 @@ namespace VisualBasicDebugger {
             };
         }
 
-        private void btnGenerateTraceCode_Click(object sender, EventArgs e) {
-            //var input = txtDocument.Text;
-            //var charStream = new CaseInsensitiveStream(input);
-            //var lexer = new VisualBasic6Lexer(charStream);
-            //var tokenStream = new CommonTokenStream(lexer);
-
-            //var parser = new VisualBasic6Parser(tokenStream);
-            //var tree = parser.startRule();
-
-            //var tracerVisitor = new TracerVisitor();
-            //tracerVisitor.Visit(tree);
-
-            //var finalCode = "";
-            //foreach (var functionTrace in tracerVisitor.Result) {
-            //    var functionName = functionTrace.ParentFunction.Name;
-
-            //    foreach (var traceLine in functionTrace.Traces) {
-            //        var lineNr = traceLine.Line;
-            //        var trace = "";
-
-            //        if (traceLine.VariableTraces.Count == 0) {
-            //            trace = $"Log \"[{functionName}:{lineNr}]\", \"\"";
-            //        } else {
-            //            var variableNames = string.Join(", ", traceLine.VariableTraces.Select(el => el.Name));
-            //            trace = $"Log \"[{functionName}:{lineNr}]\", \"{GetIndexesForList(traceLine.VariableTraces)}\",{variableNames}";
-            //        }
-
-            //        finalCode += $"{trace}\r\n";
-            //    }
-            //}
-
-            //textBox2.Text = finalCode;
-        }
-
         private static string GetIndexesForList(List<TraceVariableData> list) {
             List<string> result = new List<string>();
 
@@ -233,6 +199,35 @@ namespace VisualBasicDebugger {
                 result.Add($"{list[i].Name} {{{i}}}");
             }
             return string.Join(", ", result);
+        }
+
+        private async void btnGenerateTraceCode_Click(object sender, EventArgs e) {
+            var input = mainTextEditor.Text;
+            var tree = await GetTree(input);
+            var tracerVisitor = new TracerVisitor();
+            var finalCode = "";
+
+            tracerVisitor.Visit(tree);
+
+            foreach (var functionTrace in tracerVisitor.Result) {
+                var functionName = functionTrace.ParentFunction.Name;
+
+                foreach (var traceLine in functionTrace.Traces) {
+                    var lineNr = traceLine.Line;
+                    var trace = "";
+
+                    if (traceLine.VariableTraces.Count == 0) {
+                        trace = $"Log \"[{functionName}:{lineNr}]\", \"\"";
+                    } else {
+                        var variableNames = string.Join(", ", traceLine.VariableTraces.Select(el => el.Name));
+                        trace = $"Log \"[{functionName}:{lineNr}]\", \"{GetIndexesForList(traceLine.VariableTraces)}\",{variableNames}";
+                    }
+
+                    finalCode += $"{trace}\r\n";
+                }
+            }
+
+            mainTextEditor.Text = finalCode;
         }
     }
 }

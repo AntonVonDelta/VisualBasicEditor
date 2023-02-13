@@ -1,4 +1,5 @@
-﻿using Antlr4.Runtime.Misc;
+﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Misc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,14 @@ namespace VisualBasicDebugger.Parser.Tracer {
     public class TracerVisitor : VisualBasic6ParserBaseVisitor<object> {
         private List<FunctionTrace> _result = new List<FunctionTrace>();
         private FunctionTrace _currentTrace;
+        private TokenStreamRewriter _rewriter;
 
         public List<FunctionTrace> Result { get => _result; }
+
+        public TracerVisitor(ITokenStream tokens) {
+            _rewriter = new TokenStreamRewriter(tokens);
+        }
+
 
         public override object VisitFunctionStmt(VisualBasic6Parser.FunctionStmtContext context) {
             FunctionData currentFunction = new FunctionData() {

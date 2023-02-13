@@ -8,8 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-
 namespace VisualBasicDebugger.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -17,33 +19,33 @@ namespace VisualBasicDebugger.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
-
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
-                if ((resourceMan == null)) {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("VisualBasicDebugger.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -55,6 +57,38 @@ namespace VisualBasicDebugger.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to function test(var1 as String, byval var2 as Variant) as string
+        ///    dim unused as Variant
+        ///    dim good as string
+        ///
+        ///    dim wellJollyGood as ComplexType
+        ///
+        ///    for each i in FuncCall(var2,listVar2)
+        ///        Debug.Print i,someVariant
+        ///    next
+        ///    
+        ///    for each i in var2
+        ///        Debug.Print i,someVariant
+        ///    next
+        ///
+        ///    dim j
+        ///    dim k as integer
+        ///    b=CallAnother(list,hh)
+        ///
+        ///    set b=a
+        ///end function
+        ///
+        ///sub proc()
+        ///
+        ///end sub.
+        /// </summary>
+        internal static string mainTextEditor_Text {
+            get {
+                return ResourceManager.GetString("mainTextEditor.Text", resourceCulture);
             }
         }
     }
