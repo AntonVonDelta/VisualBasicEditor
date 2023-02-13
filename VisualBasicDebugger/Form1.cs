@@ -203,9 +203,16 @@ namespace VisualBasicDebugger {
 
         private async void btnGenerateTraceCode_Click(object sender, EventArgs e) {
             var input = mainTextEditor.Text;
-            var tree = await GetTree(input);
-            var tracerVisitor = new TracerVisitor();
-            var finalCode = "";
+            TracerVisitor tracerVisitor;
+            var charStream = new AntlrInputStream(input);
+            var lexer = new VisualBasic6Lexer(charStream);
+            CommonTokenStream tokenStream;
+            VisualBasic6Parser.StartRuleContext tree;
+
+            tree = await GetTree(mainTextEditor.Text);
+
+            tokenStream = new CommonTokenStream(lexer);
+            tracerVisitor = new TracerVisitor(tokenStream);
 
             tracerVisitor.Visit(tree);
 
@@ -222,12 +229,10 @@ namespace VisualBasicDebugger {
                         var variableNames = string.Join(", ", traceLine.VariableTraces.Select(el => el.Name));
                         trace = $"Log \"[{functionName}:{lineNr}]\", \"{GetIndexesForList(traceLine.VariableTraces)}\",{variableNames}";
                     }
-
-                    finalCode += $"{trace}\r\n";
                 }
             }
 
-            mainTextEditor.Text = finalCode;
+            mainTextEditor.Text = tracerVisitor.FinalText;
         }
     }
 }

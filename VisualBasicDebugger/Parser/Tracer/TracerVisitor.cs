@@ -15,11 +15,11 @@ namespace VisualBasicDebugger.Parser.Tracer {
         private TokenStreamRewriter _rewriter;
 
         public List<FunctionTrace> Result { get => _result; }
+        public string FinalText { get => _rewriter.GetText(); }
 
         public TracerVisitor(ITokenStream tokens) {
             _rewriter = new TokenStreamRewriter(tokens);
         }
-
 
         public override object VisitFunctionStmt(VisualBasic6Parser.FunctionStmtContext context) {
             FunctionData currentFunction = new FunctionData() {
@@ -49,7 +49,13 @@ namespace VisualBasicDebugger.Parser.Tracer {
                 Name = currentFunction.Name
             });
 
+
+            IToken doToken = context.GetChild(0).Payload as IToken;
+            _rewriter.InsertAfter(doToken.TokenIndex,"t");
+
             base.VisitFunctionStmt(context);
+
+            _rewriter.InsertAfter(context.stop.TokenIndex, "Test after");
 
             _result.Add(_currentTrace);
             _currentTrace = null;
