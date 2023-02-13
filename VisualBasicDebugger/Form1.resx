@@ -119,7 +119,7 @@
   </resheader>
   <data name="mainTextEditor.Text" xml:space="preserve">
     <value>function test(var1 as String, byval var2 as Variant) as string
-dim unused as Variant
+    dim unused as Variant
     for each i in FuncCall(var2,listVar2)
         Debug.Print i,someVariant
     next

@@ -69,12 +69,6 @@
     <Compile Include="Parser\Tracer\TraceForEach.cs" />
     <Compile Include="Parser\Tracer\TracerLetStmt.cs" />
     <Compile Include="Utils\CheckpointStack.cs" />
-    <None Include="obj\Debug\VisualBasic6Lexer.cs" />
-    <None Include="obj\Debug\VisualBasic6Parser.cs" />
-    <None Include="obj\Debug\VisualBasic6ParserBaseListener.cs" />
-    <None Include="obj\Debug\VisualBasic6ParserBaseVisitor.cs" />
-    <None Include="obj\Debug\VisualBasic6ParserListener.cs" />
-    <None Include="obj\Debug\VisualBasic6ParserVisitor.cs" />
     <Compile Include="Parser\Tracer\TraceUtils.cs" />
     <Compile Include="Parser\Tracer\TracerVisitor.cs" />
     <Compile Include="Parser\UnusedVariableListener.cs" />

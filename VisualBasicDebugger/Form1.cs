@@ -15,7 +15,7 @@ using VisualBasicDebugger.Parser.Coloring;
 
 namespace VisualBasicDebugger {
     public partial class Form1 : Form {
-        private Tuple<string, VisualBasic6Parser.StartRuleContext> cachedTree;
+        private Tuple<int, VisualBasic6Parser.StartRuleContext> cachedTree;
         private Task<VisualBasic6Parser.StartRuleContext> _stylingTask;
 
         public Form1() {
@@ -43,7 +43,7 @@ namespace VisualBasicDebugger {
         }
 
         private async Task<VisualBasic6Parser.StartRuleContext> GetTree(string input) {
-            if (cachedTree != null && cachedTree.Item1 == input) return cachedTree.Item2;
+            if (cachedTree != null && cachedTree.Item1 == input.GetHashCode()) return cachedTree.Item2;
 
             try {
                 var charStream = new CaseInsensitiveStream(input);
@@ -59,7 +59,7 @@ namespace VisualBasicDebugger {
                     return parser.startRule();
                 });
 
-                cachedTree = new Tuple<string, VisualBasic6Parser.StartRuleContext>(input, tree);
+                cachedTree = new Tuple<int, VisualBasic6Parser.StartRuleContext>(input.GetHashCode(), tree);
 
                 return tree;
             } catch { }
@@ -142,9 +142,25 @@ namespace VisualBasicDebugger {
             return null;
         }
 
+        private void UpdateLineNumbers() {
+            // Did the number of characters in the line number display change?
+            // i.e. nnn VS nn, or nnnn VS nn, etc...
+            var maxLineNumberCharLength = mainTextEditor.Lines.Count.ToString().Length;
+
+            // Calculate the width required to display the last line number
+            // and include some padding for good measure.
+            const int padding = 2;
+
+            mainTextEditor.Margins[0].Width = mainTextEditor.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
+        }
+
+
         private void Form1_Load(object sender, EventArgs e) {
             SetStyles();
             StartCodeAnalysis();
+
+            // Set line numbering margin width
+            mainTextEditor.Margins[0].Width = 35;
 
             mainTextEditor.StyleNeeded += (object eventSender, StyleNeededEventArgs eventArgs) => {
                 StartCodeStyling(eventArgs);
@@ -157,6 +173,15 @@ namespace VisualBasicDebugger {
 
             mainTextEditor.DwellEnd += (object eventSender, DwellEventArgs eventArgs) => {
                 mainTextEditor.CallTipCancel();
+            };
+
+
+            mainTextEditor.TextChanged += (object eventSender, EventArgs eventArgs) => {
+                UpdateLineNumbers();
+            };
+
+            mainTextEditor.ZoomChanged += (object eventSender, EventArgs eventArgs) => {
+                UpdateLineNumbers();
             };
         }
 

@@ -25,8 +25,8 @@
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.mainTextEditor = new ScintillaNET.Scintilla();
             this.btnGenerateTraceCode = new System.Windows.Forms.Button();
+            this.mainTextEditor = new ScintillaNET.Scintilla();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,6 +45,15 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1253, 716);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
+            // btnGenerateTraceCode
+            // 
+            this.btnGenerateTraceCode.Location = new System.Drawing.Point(1106, 3);
+            this.btnGenerateTraceCode.Name = "btnGenerateTraceCode";
+            this.btnGenerateTraceCode.Size = new System.Drawing.Size(133, 30);
+            this.btnGenerateTraceCode.TabIndex = 9;
+            this.btnGenerateTraceCode.Text = "Generate trace code";
+            this.btnGenerateTraceCode.UseVisualStyleBackColor = true;
+            // 
             // mainTextEditor
             // 
             this.mainTextEditor.AutoCMaxHeight = 9;
@@ -53,7 +62,7 @@
             this.mainTextEditor.CaretLineFrame = 1;
             this.mainTextEditor.CaretLineVisible = true;
             this.mainTextEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainTextEditor.LexerName = null;
+            this.mainTextEditor.LexerName = "";
             this.mainTextEditor.Location = new System.Drawing.Point(3, 3);
             this.mainTextEditor.Name = "mainTextEditor";
             this.mainTextEditor.ScrollWidth = 351;
@@ -63,15 +72,6 @@
             this.mainTextEditor.Text = resources.GetString("mainTextEditor.Text");
             this.mainTextEditor.UseRightToLeftReadingLayout = false;
             this.mainTextEditor.WrapMode = ScintillaNET.WrapMode.None;
-            // 
-            // btnGenerateTraceCode
-            // 
-            this.btnGenerateTraceCode.Location = new System.Drawing.Point(1106, 3);
-            this.btnGenerateTraceCode.Name = "btnGenerateTraceCode";
-            this.btnGenerateTraceCode.Size = new System.Drawing.Size(133, 30);
-            this.btnGenerateTraceCode.TabIndex = 9;
-            this.btnGenerateTraceCode.Text = "Generate trace code";
-            this.btnGenerateTraceCode.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
