@@ -29,8 +29,13 @@ namespace VisualBasicDebugger {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btnGenerateTraceCode = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.mainTextEditor = new ScintillaNET.Scintilla();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -39,7 +44,7 @@ namespace VisualBasicDebugger {
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tableLayoutPanel1.Controls.Add(this.btnGenerateTraceCode, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.mainTextEditor, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tabControl1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -58,6 +63,28 @@ namespace VisualBasicDebugger {
             this.btnGenerateTraceCode.UseVisualStyleBackColor = true;
             this.btnGenerateTraceCode.Click += new System.EventHandler(this.btnGenerateTraceCode_Click);
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(3, 3);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1097, 710);
+            this.tabControl1.TabIndex = 10;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.mainTextEditor);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(1089, 684);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
             // mainTextEditor
             // 
             this.mainTextEditor.AutoCMaxHeight = 9;
@@ -70,12 +97,22 @@ namespace VisualBasicDebugger {
             this.mainTextEditor.Location = new System.Drawing.Point(3, 3);
             this.mainTextEditor.Name = "mainTextEditor";
             this.mainTextEditor.ScrollWidth = 345;
-            this.mainTextEditor.Size = new System.Drawing.Size(1097, 710);
+            this.mainTextEditor.Size = new System.Drawing.Size(1083, 678);
             this.mainTextEditor.TabIndents = true;
-            this.mainTextEditor.TabIndex = 10;
+            this.mainTextEditor.TabIndex = 0;
             this.mainTextEditor.Text = resources.GetString("mainTextEditor.Text");
             this.mainTextEditor.UseRightToLeftReadingLayout = false;
             this.mainTextEditor.WrapMode = ScintillaNET.WrapMode.None;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(1089, 684);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -87,6 +124,8 @@ namespace VisualBasicDebugger {
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -95,6 +134,9 @@ namespace VisualBasicDebugger {
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button btnGenerateTraceCode;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
         private Scintilla mainTextEditor;
     }
 }

@@ -167,6 +167,9 @@ namespace VisualBasicDebugger {
 
             SetChangeHistory(3);
 
+            Form2 frm = new Form2();
+            frm.Show();
+
             mainTextEditor.Margins[1].Width = 20;
 
             mainTextEditor.StyleNeeded += (object eventSender, StyleNeededEventArgs eventArgs) => {
