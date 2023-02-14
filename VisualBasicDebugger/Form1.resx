@@ -117,4 +117,33 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="mainTextEditor.Text" xml:space="preserve">
+    <value>function test(var1 as String, byval var2 as Variant) as string
+    dim unused as Variant
+    dim good as string
+
+    dim wellJollyGood as ComplexType
+
+    for each i in FuncCall(var2,listVar2)
+        Debug.Print i,someVariant
+    next
+    
+    for each i in var2
+        Debug.Print i,someVariant
+    next
+
+    dim j
+    dim k as integer
+    b=CallAnother(list,hh)
+    b=CallAnother(list,hh)
+
+    dim a,b,c,d,e,f
+    b=CallAnother(a,b,c,d,e,f)
+    set b=a
+end function
+
+sub proc()
+
+end sub</value>
+  </data>
 </root>

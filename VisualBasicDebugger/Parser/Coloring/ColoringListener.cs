@@ -79,7 +79,12 @@ namespace VisualBasicDebugger.Parser.Coloring {
             _doc.StartStyling(context.start.StartIndex);
             _doc.SetStyling(context.GetText().Length, 0);
 
-            _doc.StartStyling(context.start.StartIndex);
+            if (context.visibility() != null) {
+                _doc.StartStyling(context.visibility().start.StartIndex);
+                _doc.SetStyling(context.visibility().GetText().Length, 1);
+            }
+
+            _doc.StartStyling(context.FUNCTION().Symbol.StartIndex);
             _doc.SetStyling(context.FUNCTION().GetText().Length, 1);
 
             _doc.StartStyling(context.ambiguousIdentifier().start.StartIndex);
@@ -103,7 +108,7 @@ namespace VisualBasicDebugger.Parser.Coloring {
             _doc.StartStyling(context.start.StartIndex);
             _doc.SetStyling(context.GetText().Length, 0);
 
-            _doc.StartStyling(context.start.StartIndex);
+            _doc.StartStyling(context.SUB().Symbol.StartIndex);
             _doc.SetStyling(context.SUB().GetText().Length, 1);
 
             _doc.StartStyling(context.ambiguousIdentifier().start.StartIndex);
@@ -111,6 +116,23 @@ namespace VisualBasicDebugger.Parser.Coloring {
 
             _doc.StartStyling(context.END_SUB().Symbol.StartIndex);
             _doc.SetStyling(context.END_SUB().GetText().Length, 1);
+        }
+
+        public override void EnterArgList(VisualBasic6Parser.ArgListContext context) {
+            foreach (var arg in context.arg()) {
+                if (arg.BYVAL() != null) {
+                    _doc.StartStyling(arg.BYVAL().Symbol.StartIndex);
+                    _doc.SetStyling(arg.BYVAL().GetText().Length, 1);
+                }
+
+                if (arg.BYREF() != null) {
+                    _doc.StartStyling(arg.BYREF().Symbol.StartIndex);
+                    _doc.SetStyling(arg.BYREF().GetText().Length, 1);
+                }
+
+                _doc.StartStyling(arg.ambiguousIdentifier().start.StartIndex);
+                _doc.SetStyling(arg.ambiguousIdentifier().GetText().Length, 2);
+            }
         }
 
         public override void EnterBlock(VisualBasic6Parser.BlockContext context) {
@@ -125,12 +147,17 @@ namespace VisualBasicDebugger.Parser.Coloring {
         public override void EnterForEachStmt(VisualBasic6Parser.ForEachStmtContext context) {
             if (!ShouldStyle(context.start.Line)) return;
 
-            _doc.StartStyling(context.start.StartIndex);
+            _doc.StartStyling(context.FOR().Symbol.StartIndex);
             _doc.SetStyling(context.FOR().GetText().Length, 1);
 
             if (context.EACH() != null) {
                 _doc.StartStyling(context.EACH().Symbol.StartIndex);
                 _doc.SetStyling(context.EACH().GetText().Length, 1);
+            }
+
+            if (context.IN() != null) {
+                _doc.StartStyling(context.IN().Symbol.StartIndex);
+                _doc.SetStyling(context.IN().GetText().Length, 1);
             }
 
             _doc.StartStyling(context.NEXT().Symbol.StartIndex);
@@ -141,7 +168,7 @@ namespace VisualBasicDebugger.Parser.Coloring {
         public override void EnterWhileWendStmt(VisualBasic6Parser.WhileWendStmtContext context) {
             if (!ShouldStyle(context.start.Line)) return;
 
-            _doc.StartStyling(context.start.StartIndex);
+            _doc.StartStyling(context.WHILE().Symbol.StartIndex);
             _doc.SetStyling(context.WHILE().GetText().Length, 1);
 
             _doc.StartStyling(context.WEND().Symbol.StartIndex);
@@ -152,7 +179,7 @@ namespace VisualBasicDebugger.Parser.Coloring {
         public override void EnterVariableStmt(VisualBasic6Parser.VariableStmtContext context) {
             if (!ShouldStyle(context.start.Line)) return;
 
-            _doc.StartStyling(context.start.StartIndex);
+            _doc.StartStyling(context.DIM().Symbol.StartIndex);
             _doc.SetStyling(context.DIM().GetText().Length, 1);
         }
 
@@ -175,7 +202,7 @@ namespace VisualBasicDebugger.Parser.Coloring {
         public override void EnterSetStmt(VisualBasic6Parser.SetStmtContext context) {
             if (!ShouldStyle(context.start.Line)) return;
 
-            _doc.StartStyling(context.start.StartIndex);
+            _doc.StartStyling(context.SET().Symbol.StartIndex);
             _doc.SetStyling(context.SET().GetText().Length, 1);
         }
 
@@ -192,14 +219,14 @@ namespace VisualBasicDebugger.Parser.Coloring {
         public override void EnterICS_S_ProcedureOrArrayCall(VisualBasic6Parser.ICS_S_ProcedureOrArrayCallContext context) {
             if (!ShouldStyle(context.start.Line)) return;
 
-            _doc.StartStyling(context.start.StartIndex);
+            _doc.StartStyling(context.ambiguousIdentifier().start.StartIndex);
             _doc.SetStyling(context.ambiguousIdentifier().GetText().Length, 3);
         }
 
         public override void EnterGoToStmt(VisualBasic6Parser.GoToStmtContext context) {
             if (!ShouldStyle(context.start.Line)) return;
 
-            _doc.StartStyling(context.start.StartIndex);
+            _doc.StartStyling(context.GOTO().Symbol.StartIndex);
             _doc.SetStyling(context.GOTO().GetText().Length, 1);
         }
     }

@@ -1,4 +1,5 @@
-﻿using VisualBasicDebugger.Properties;
+﻿using ScintillaNET;
+using VisualBasicDebugger.Properties;
 
 namespace VisualBasicDebugger {
     partial class Form1 {
@@ -25,6 +26,7 @@ namespace VisualBasicDebugger {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btnGenerateTraceCode = new System.Windows.Forms.Button();
             this.mainTextEditor = new ScintillaNET.Scintilla();
@@ -56,6 +58,25 @@ namespace VisualBasicDebugger {
             this.btnGenerateTraceCode.UseVisualStyleBackColor = true;
             this.btnGenerateTraceCode.Click += new System.EventHandler(this.btnGenerateTraceCode_Click);
             // 
+            // mainTextEditor
+            // 
+            this.mainTextEditor.AutoCMaxHeight = 9;
+            this.mainTextEditor.BiDirectionality = ScintillaNET.BiDirectionalDisplayType.Disabled;
+            this.mainTextEditor.CaretLineBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.mainTextEditor.CaretLineFrame = 1;
+            this.mainTextEditor.CaretLineVisible = true;
+            this.mainTextEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainTextEditor.LexerName = null;
+            this.mainTextEditor.Location = new System.Drawing.Point(3, 3);
+            this.mainTextEditor.Name = "mainTextEditor";
+            this.mainTextEditor.ScrollWidth = 345;
+            this.mainTextEditor.Size = new System.Drawing.Size(1097, 710);
+            this.mainTextEditor.TabIndents = true;
+            this.mainTextEditor.TabIndex = 10;
+            this.mainTextEditor.Text = resources.GetString("mainTextEditor.Text");
+            this.mainTextEditor.UseRightToLeftReadingLayout = false;
+            this.mainTextEditor.WrapMode = ScintillaNET.WrapMode.None;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -67,31 +88,14 @@ namespace VisualBasicDebugger {
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
-            // 
-            // mainTextEditor
-            // 
-            this.mainTextEditor.AutoCMaxHeight = 9;
-            this.mainTextEditor.CaretLineBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.mainTextEditor.CaretLineFrame = 1;
-            this.mainTextEditor.CaretLineVisible = true;
-            this.mainTextEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainTextEditor.LexerName = "";
-            this.mainTextEditor.Location = new System.Drawing.Point(3, 3);
-            this.mainTextEditor.Name = "mainTextEditor";
-            this.mainTextEditor.ScrollWidth = 351;
-            this.mainTextEditor.Size = new System.Drawing.Size(1097, 710);
-            this.mainTextEditor.TabIndents = true;
-            this.mainTextEditor.TabIndex = 8;
-            this.mainTextEditor.Text = Resources.mainTextEditor_Text;
-            this.mainTextEditor.UseRightToLeftReadingLayout = false;
-            this.mainTextEditor.WrapMode = ScintillaNET.WrapMode.None;
+
         }
 
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button btnGenerateTraceCode;
-        private ScintillaNET.Scintilla mainTextEditor;
+        private Scintilla mainTextEditor;
     }
 }
 
