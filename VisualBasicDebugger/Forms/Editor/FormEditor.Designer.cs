@@ -27,44 +27,42 @@ namespace VisualBasicDebugger.Forms.Editor {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormEditor));
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tableLayoutPrincipal = new System.Windows.Forms.TableLayoutPanel();
+            this.tabDocuments = new System.Windows.Forms.TabControl();
             this.mainTextEditor = new ScintillaNET.Scintilla();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutSideRight = new System.Windows.Forms.TableLayoutPanel();
             this.btnGenerateTraceCode = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPrincipal.SuspendLayout();
+            this.tableLayoutSideRight.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tableLayoutPanel1
+            // tableLayoutPrincipal
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
-            this.tableLayoutPanel1.Controls.Add(this.mainTextEditor, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.tabControl1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 531F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1253, 716);
-            this.tableLayoutPanel1.TabIndex = 8;
+            this.tableLayoutPrincipal.ColumnCount = 2;
+            this.tableLayoutPrincipal.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPrincipal.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPrincipal.Controls.Add(this.mainTextEditor, 0, 1);
+            this.tableLayoutPrincipal.Controls.Add(this.tabDocuments, 0, 0);
+            this.tableLayoutPrincipal.Controls.Add(this.tableLayoutSideRight, 1, 0);
+            this.tableLayoutPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPrincipal.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPrincipal.Name = "tableLayoutPrincipal";
+            this.tableLayoutPrincipal.RowCount = 2;
+            this.tableLayoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPrincipal.Size = new System.Drawing.Size(1253, 716);
+            this.tableLayoutPrincipal.TabIndex = 8;
             // 
-            // tabControl1
+            // tabDocuments
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(3, 3);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1097, 179);
-            this.tabControl1.TabIndex = 10;
+            this.tabDocuments.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabDocuments.HotTrack = true;
+            this.tabDocuments.Location = new System.Drawing.Point(3, 3);
+            this.tabDocuments.Name = "tabDocuments";
+            this.tabDocuments.SelectedIndex = 0;
+            this.tabDocuments.Size = new System.Drawing.Size(1097, 20);
+            this.tabDocuments.TabIndex = 10;
+            this.tabDocuments.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabDocuments_Selected);
             // 
             // mainTextEditor
             // 
@@ -75,45 +73,35 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.mainTextEditor.CaretLineVisible = true;
             this.mainTextEditor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainTextEditor.LexerName = null;
-            this.mainTextEditor.Location = new System.Drawing.Point(3, 188);
+            this.mainTextEditor.Location = new System.Drawing.Point(3, 29);
             this.mainTextEditor.Name = "mainTextEditor";
             this.mainTextEditor.ScrollWidth = 345;
-            this.mainTextEditor.Size = new System.Drawing.Size(1097, 525);
+            this.mainTextEditor.Size = new System.Drawing.Size(1097, 684);
             this.mainTextEditor.TabIndents = true;
             this.mainTextEditor.TabIndex = 12;
             this.mainTextEditor.Text = resources.GetString("mainTextEditor.Text");
             this.mainTextEditor.UseRightToLeftReadingLayout = false;
             this.mainTextEditor.WrapMode = ScintillaNET.WrapMode.None;
             // 
-            // tabPage1
+            // tableLayoutSideRight
             // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1089, 153);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 1;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.btnGenerateTraceCode, 0, 1);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(1106, 3);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel1.SetRowSpan(this.tableLayoutPanel2, 2);
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(144, 710);
-            this.tableLayoutPanel2.TabIndex = 13;
+            this.tableLayoutSideRight.ColumnCount = 1;
+            this.tableLayoutSideRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutSideRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutSideRight.Controls.Add(this.btnGenerateTraceCode, 0, 1);
+            this.tableLayoutSideRight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutSideRight.Location = new System.Drawing.Point(1106, 3);
+            this.tableLayoutSideRight.Name = "tableLayoutSideRight";
+            this.tableLayoutSideRight.RowCount = 2;
+            this.tableLayoutPrincipal.SetRowSpan(this.tableLayoutSideRight, 2);
+            this.tableLayoutSideRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 71.54929F));
+            this.tableLayoutSideRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 28.4507F));
+            this.tableLayoutSideRight.Size = new System.Drawing.Size(144, 710);
+            this.tableLayoutSideRight.TabIndex = 13;
             // 
             // btnGenerateTraceCode
             // 
-            this.btnGenerateTraceCode.Location = new System.Drawing.Point(3, 358);
+            this.btnGenerateTraceCode.Location = new System.Drawing.Point(3, 510);
             this.btnGenerateTraceCode.Name = "btnGenerateTraceCode";
             this.btnGenerateTraceCode.Size = new System.Drawing.Size(133, 30);
             this.btnGenerateTraceCode.TabIndex = 13;
@@ -125,25 +113,23 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1253, 716);
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.tableLayoutPrincipal);
             this.Name = "FormEditor";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormEditor_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPrincipal.ResumeLayout(false);
+            this.tableLayoutSideRight.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPrincipal;
+        private System.Windows.Forms.TabControl tabDocuments;
         private Scintilla mainTextEditor;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutSideRight;
         private System.Windows.Forms.Button btnGenerateTraceCode;
     }
 }

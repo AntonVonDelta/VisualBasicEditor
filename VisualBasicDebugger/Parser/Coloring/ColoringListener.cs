@@ -56,7 +56,6 @@ namespace VisualBasicDebugger.Parser.Coloring {
         }
 
         private void AddSubScope(VisualBasic6Parser.SubStmtContext context) {
-            _scope = new CheckpointStack<VariableData>();
             _scope.AddCheckpoint();
 
             // Add arguments to scoped variables
@@ -99,6 +98,10 @@ namespace VisualBasicDebugger.Parser.Coloring {
             _doc.SetStyling(context.END_FUNCTION().GetText().Length, 1);
         }
 
+        public override void ExitFunctionStmt(VisualBasic6Parser.FunctionStmtContext context) {
+            _scope.ReverseCheckpoint();
+        }
+
         public override void EnterSubStmt(VisualBasic6Parser.SubStmtContext context) {
             AddSubScope(context);
 
@@ -107,6 +110,11 @@ namespace VisualBasicDebugger.Parser.Coloring {
             // Clear previous styling
             _doc.StartStyling(context.start.StartIndex);
             _doc.SetStyling(context.GetText().Length, 0);
+
+            if (context.visibility() != null) {
+                _doc.StartStyling(context.visibility().start.StartIndex);
+                _doc.SetStyling(context.visibility().GetText().Length, 1);
+            }
 
             _doc.StartStyling(context.SUB().Symbol.StartIndex);
             _doc.SetStyling(context.SUB().GetText().Length, 1);
@@ -118,8 +126,17 @@ namespace VisualBasicDebugger.Parser.Coloring {
             _doc.SetStyling(context.END_SUB().GetText().Length, 1);
         }
 
+        public override void ExitSubStmt(VisualBasic6Parser.SubStmtContext context) {
+            _scope.ReverseCheckpoint();
+        }
+
         public override void EnterArgList(VisualBasic6Parser.ArgListContext context) {
             foreach (var arg in context.arg()) {
+                var variableName = arg.ambiguousIdentifier().GetText();
+                var variableType = arg.asTypeClause()?.type_()?.GetText() ?? "Variant";
+
+                _scope.Add(new VariableData() { Name = variableName, Type = variableType });
+
                 if (arg.BYVAL() != null) {
                     _doc.StartStyling(arg.BYVAL().Symbol.StartIndex);
                     _doc.SetStyling(arg.BYVAL().GetText().Length, 1);
@@ -134,6 +151,8 @@ namespace VisualBasicDebugger.Parser.Coloring {
                 _doc.SetStyling(arg.ambiguousIdentifier().GetText().Length, 2);
             }
         }
+
+
 
         public override void EnterBlock(VisualBasic6Parser.BlockContext context) {
             _scope.AddCheckpoint();
@@ -150,15 +169,21 @@ namespace VisualBasicDebugger.Parser.Coloring {
             _doc.StartStyling(context.FOR().Symbol.StartIndex);
             _doc.SetStyling(context.FOR().GetText().Length, 1);
 
-            if (context.EACH() != null) {
-                _doc.StartStyling(context.EACH().Symbol.StartIndex);
-                _doc.SetStyling(context.EACH().GetText().Length, 1);
-            }
+            _doc.StartStyling(context.EACH().Symbol.StartIndex);
+            _doc.SetStyling(context.EACH().GetText().Length, 1);
 
-            if (context.IN() != null) {
-                _doc.StartStyling(context.IN().Symbol.StartIndex);
-                _doc.SetStyling(context.IN().GetText().Length, 1);
-            }
+            _doc.StartStyling(context.IN().Symbol.StartIndex);
+            _doc.SetStyling(context.IN().GetText().Length, 1);
+
+            _doc.StartStyling(context.NEXT().Symbol.StartIndex);
+            _doc.SetStyling(context.NEXT().GetText().Length, 1);
+        }
+
+        public override void EnterForNextStmt(VisualBasic6Parser.ForNextStmtContext context) {
+            if (!ShouldStyle(context.start.Line)) return;
+
+            _doc.StartStyling(context.FOR().Symbol.StartIndex);
+            _doc.SetStyling(context.FOR().GetText().Length, 1);
 
             _doc.StartStyling(context.NEXT().Symbol.StartIndex);
             _doc.SetStyling(context.NEXT().GetText().Length, 1);

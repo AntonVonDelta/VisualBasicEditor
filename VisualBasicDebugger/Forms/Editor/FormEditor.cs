@@ -12,15 +12,19 @@ using System.Drawing;
 using ScintillaNET;
 using System.Threading.Tasks;
 using VisualBasicDebugger.Parser.Coloring;
+using System.IO;
 
 namespace VisualBasicDebugger.Forms.Editor {
     public partial class FormEditor : Form {
+        private string _projectPath;
         private Tuple<int, VisualBasic6Parser.StartRuleContext> cachedTree;
         private Task<VisualBasic6Parser.StartRuleContext> _stylingTask;
         private TaskCompletionSource<bool> _closeFormTask;
 
         public FormEditor(string projectPath) {
             InitializeComponent();
+
+            _projectPath = projectPath;
         }
 
 
@@ -168,14 +172,28 @@ namespace VisualBasicDebugger.Forms.Editor {
             mainTextEditor.Margins[0].Width = mainTextEditor.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
         }
 
+        private void PopulateTabs() {
+            foreach (var file in Directory.GetFiles(_projectPath)) {
+                TabPage documentTitleTab = new TabPage(Path.GetFileName(file));
+
+                documentTitleTab.Tag = file;
+                tabDocuments.TabPages.Add(documentTitleTab);
+            }
+        }
+
+        private void LoadDocumentFromPath(string filePath) {
+            using (var stream = new StreamReader(filePath)) {
+                mainTextEditor.Text = stream.ReadToEnd();
+            }
+        }
 
         private void Form1_Load(object sender, EventArgs e) {
             SetStyles();
             StartCodeAnalysis();
             UpdateLineNumbers();
             SetChangeHistory(3);
+            PopulateTabs();
 
-            tabPage1.Enabled = false;
             mainTextEditor.Margins[1].Width = 20;
 
             mainTextEditor.StyleNeeded += (object eventSender, StyleNeededEventArgs eventArgs) => {
@@ -255,6 +273,10 @@ namespace VisualBasicDebugger.Forms.Editor {
             if (!await cancelCloseTask) {
                 Close();
             }
+        }
+
+        private void tabDocuments_Selected(object sender, TabControlEventArgs e) {
+            LoadDocumentFromPath((string)e.TabPage.Tag);
         }
     }
 }

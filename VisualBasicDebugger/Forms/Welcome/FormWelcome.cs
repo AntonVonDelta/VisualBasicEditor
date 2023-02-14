@@ -67,10 +67,13 @@ namespace VisualBasicDebugger.Forms.Welcome {
 
             projectPath = folderBrowserDialog.FileName;
             formEditor = new FormEditor(projectPath);
+            formEditor.FormClosed += (object editorSender, FormClosedEventArgs editorArgs) => { Close(); };
             formEditor.Show();
 
             Properties.Settings.Default.HistoryProjects.Add(projectPath);
             Properties.Settings.Default.Save();
+
+            Hide();
         }
 
         private void borderPanel_MouseDown(object sender, MouseEventArgs e) {
