@@ -204,35 +204,34 @@ namespace VisualBasicDebugger {
         private async void btnGenerateTraceCode_Click(object sender, EventArgs e) {
             var input = mainTextEditor.Text;
             TracerVisitor tracerVisitor;
-            var charStream = new AntlrInputStream(input);
-            var lexer = new VisualBasic6Lexer(charStream);
-            CommonTokenStream tokenStream;
             VisualBasic6Parser.StartRuleContext tree;
+            List<string> lines = input.Split('\n').ToList();
 
             tree = await GetTree(mainTextEditor.Text);
-
-            tokenStream = new CommonTokenStream(lexer);
-            tracerVisitor = new TracerVisitor(tokenStream);
-
+            tracerVisitor = new TracerVisitor();
             tracerVisitor.Visit(tree);
 
             foreach (var functionTrace in tracerVisitor.Result) {
                 var functionName = functionTrace.ParentFunction.Name;
 
-                foreach (var traceLine in functionTrace.Traces) {
+                for (int i = functionTrace.Traces.Count - 1; i >= 0; i--) {
+                    var traceLine = functionTrace.Traces[i];
                     var lineNr = traceLine.Line;
-                    var trace = "";
+                    string trace;
 
                     if (traceLine.VariableTraces.Count == 0) {
-                        trace = $"Log \"[{functionName}:{lineNr}]\", \"\"";
+                        trace = $"\tLog \"[{functionName}:{lineNr + i + 1}]\", \"\"";
                     } else {
                         var variableNames = string.Join(", ", traceLine.VariableTraces.Select(el => el.Name));
-                        trace = $"Log \"[{functionName}:{lineNr}]\", \"{GetIndexesForList(traceLine.VariableTraces)}\",{variableNames}";
+                        trace = $"\tLog \"[{functionName}:{lineNr + i + 1}]\", \"{GetIndexesForList(traceLine.VariableTraces)}\",{variableNames}";
                     }
+
+                    lines.Insert(lineNr - 1, trace);
                 }
             }
 
-            mainTextEditor.Text = tracerVisitor.FinalText;
+            mainTextEditor.Text = string.Join("\n", lines);
         }
+
     }
 }

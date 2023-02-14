@@ -78,13 +78,16 @@ namespace VisualBasicDebugger.Properties {
         ///    dim j
         ///    dim k as integer
         ///    b=CallAnother(list,hh)
+        ///    b=CallAnother(list,hh)
         ///
+        ///    dim a,b,c,d,e,f
+        ///    b=CallAnother(a,b,c,d,e,f)
         ///    set b=a
         ///end function
         ///
         ///sub proc()
         ///
-        ///end sub.
+        ///end [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string mainTextEditor_Text {
             get {
