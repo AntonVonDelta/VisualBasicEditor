@@ -14,11 +14,11 @@ using System.Threading.Tasks;
 using VisualBasicDebugger.Parser.Coloring;
 
 namespace VisualBasicDebugger {
-    public partial class Form1 : Form {
+    public partial class FormEditor : Form {
         private Tuple<int, VisualBasic6Parser.StartRuleContext> cachedTree;
         private Task<VisualBasic6Parser.StartRuleContext> _stylingTask;
 
-        public Form1() {
+        public FormEditor() {
             InitializeComponent();
         }
 
@@ -167,7 +167,7 @@ namespace VisualBasicDebugger {
 
             SetChangeHistory(3);
 
-            Form2 frm = new Form2();
+            FormWelcome frm = new FormWelcome();
             frm.Show();
 
             mainTextEditor.Margins[1].Width = 20;
