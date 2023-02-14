@@ -17,9 +17,16 @@ namespace VisualBasicDebugger {
     public partial class FormEditor : Form {
         private Tuple<int, VisualBasic6Parser.StartRuleContext> cachedTree;
         private Task<VisualBasic6Parser.StartRuleContext> _stylingTask;
+        private TaskCompletionSource<bool> _closeFormTask;
 
         public FormEditor() {
             InitializeComponent();
+        }
+
+
+        private Task<bool> ShouldCancelClose() {
+            if (_closeFormTask == null) _closeFormTask = new TaskCompletionSource<bool>();
+            return _closeFormTask.Task;
         }
 
         private void SetStyles() {
@@ -68,7 +75,7 @@ namespace VisualBasicDebugger {
         }
 
         private async void StartCodeAnalysis() {
-            while (true) {
+            while (_closeFormTask == null) {
                 string input;
                 VisualBasic6Parser.StartRuleContext tree;
 
@@ -95,11 +102,13 @@ namespace VisualBasicDebugger {
 
                 }
 
-                while (true) {
+                while (_closeFormTask == null) {
                     await Task.Delay(2000);
                     if (input != mainTextEditor.Text) break;
                 }
             }
+
+            _closeFormTask.SetResult(false);
         }
 
         private async void StartCodeStyling(StyleNeededEventArgs eventArgs) {
@@ -164,11 +173,7 @@ namespace VisualBasicDebugger {
             SetStyles();
             StartCodeAnalysis();
             UpdateLineNumbers();
-
             SetChangeHistory(3);
-
-            FormWelcome frm = new FormWelcome();
-            frm.Show();
 
             mainTextEditor.Margins[1].Width = 20;
 
@@ -236,5 +241,19 @@ namespace VisualBasicDebugger {
             mainTextEditor.Text = string.Join("\n", lines);
         }
 
+        private async void FormEditor_FormClosing(object sender, FormClosingEventArgs e) {
+            var cancelCloseTask = ShouldCancelClose();
+
+            if (cancelCloseTask.IsCompleted) {
+                if (await cancelCloseTask) e.Cancel = true;
+                return;
+            }
+
+            e.Cancel = true;
+
+            if (!await cancelCloseTask) {
+                Close();
+            }
+        }
     }
 }

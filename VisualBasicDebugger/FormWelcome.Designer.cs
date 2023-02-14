@@ -25,11 +25,11 @@ namespace VisualBasicDebugger {
         /// </summary>
         private void InitializeComponent() {
             this.borderPanel = new System.Windows.Forms.Panel();
+            this.btnOpenNewProject = new System.Windows.Forms.Button();
+            this.lblTitle2 = new System.Windows.Forms.Label();
             this.lblOpenRecentProject = new System.Windows.Forms.Label();
             this.lstProjects = new System.Windows.Forms.ListView();
             this.lblTitle1 = new System.Windows.Forms.Label();
-            this.btnOpenNewProject = new System.Windows.Forms.Button();
-            this.lblTitle2 = new System.Windows.Forms.Label();
             this.borderPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,6 +46,31 @@ namespace VisualBasicDebugger {
             this.borderPanel.Name = "borderPanel";
             this.borderPanel.Size = new System.Drawing.Size(800, 450);
             this.borderPanel.TabIndex = 5;
+            this.borderPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.borderPanel_MouseDown);
+            // 
+            // btnOpenNewProject
+            // 
+            this.btnOpenNewProject.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnOpenNewProject.FlatAppearance.BorderSize = 0;
+            this.btnOpenNewProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenNewProject.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOpenNewProject.Location = new System.Drawing.Point(541, 219);
+            this.btnOpenNewProject.Name = "btnOpenNewProject";
+            this.btnOpenNewProject.Size = new System.Drawing.Size(246, 63);
+            this.btnOpenNewProject.TabIndex = 9;
+            this.btnOpenNewProject.Text = "Open New Project";
+            this.btnOpenNewProject.UseVisualStyleBackColor = false;
+            this.btnOpenNewProject.Click += new System.EventHandler(this.btnOpenNewProject_Click);
+            // 
+            // lblTitle2
+            // 
+            this.lblTitle2.AutoSize = true;
+            this.lblTitle2.Font = new System.Drawing.Font("Microsoft PhagsPa", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle2.Location = new System.Drawing.Point(479, 39);
+            this.lblTitle2.Name = "lblTitle2";
+            this.lblTitle2.Size = new System.Drawing.Size(129, 82);
+            this.lblTitle2.TabIndex = 8;
+            this.lblTitle2.Text = "IDE";
             // 
             // lblOpenRecentProject
             // 
@@ -77,29 +102,6 @@ namespace VisualBasicDebugger {
             this.lblTitle1.TabIndex = 5;
             this.lblTitle1.Text = "Visual Studio";
             // 
-            // btnOpenNewProject
-            // 
-            this.btnOpenNewProject.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.btnOpenNewProject.FlatAppearance.BorderSize = 0;
-            this.btnOpenNewProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOpenNewProject.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOpenNewProject.Location = new System.Drawing.Point(541, 219);
-            this.btnOpenNewProject.Name = "btnOpenNewProject";
-            this.btnOpenNewProject.Size = new System.Drawing.Size(246, 63);
-            this.btnOpenNewProject.TabIndex = 9;
-            this.btnOpenNewProject.Text = "Open New Project";
-            this.btnOpenNewProject.UseVisualStyleBackColor = false;
-            // 
-            // lblTitle2
-            // 
-            this.lblTitle2.AutoSize = true;
-            this.lblTitle2.Font = new System.Drawing.Font("Microsoft PhagsPa", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle2.Location = new System.Drawing.Point(479, 39);
-            this.lblTitle2.Name = "lblTitle2";
-            this.lblTitle2.Size = new System.Drawing.Size(129, 82);
-            this.lblTitle2.TabIndex = 8;
-            this.lblTitle2.Text = "IDE";
-            // 
             // FormWelcome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -112,7 +114,6 @@ namespace VisualBasicDebugger {
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Welcome";
             this.Load += new System.EventHandler(this.FormWelcome_Load);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormWelcome_MouseDown);
             this.borderPanel.ResumeLayout(false);
             this.borderPanel.PerformLayout();
             this.ResumeLayout(false);
