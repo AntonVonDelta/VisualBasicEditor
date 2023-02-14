@@ -19,7 +19,7 @@ namespace VisualBasicDebugger.Forms.Editor {
         private Task<VisualBasic6Parser.StartRuleContext> _stylingTask;
         private TaskCompletionSource<bool> _closeFormTask;
 
-        public FormEditor() {
+        public FormEditor(string projectPath) {
             InitializeComponent();
         }
 
@@ -175,6 +175,7 @@ namespace VisualBasicDebugger.Forms.Editor {
             UpdateLineNumbers();
             SetChangeHistory(3);
 
+            tabPage1.Enabled = false;
             mainTextEditor.Margins[1].Width = 20;
 
             mainTextEditor.StyleNeeded += (object eventSender, StyleNeededEventArgs eventArgs) => {

@@ -31,7 +31,6 @@ namespace VisualBasicDebugger.Forms.Welcome {
             this.lblOpenRecentProject = new System.Windows.Forms.Label();
             this.lstProjects = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.btnClose = new System.Windows.Forms.Button();
             this.borderPanel.SuspendLayout();
             this.SuspendLayout();
@@ -120,6 +119,7 @@ namespace VisualBasicDebugger.Forms.Welcome {
             this.btnClose.TabIndex = 10;
             this.btnClose.Text = "X";
             this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             this.btnClose.MouseEnter += new System.EventHandler(this.btnClose_MouseEnter);
             this.btnClose.MouseLeave += new System.EventHandler(this.btnClose_MouseLeave);
             // 
@@ -149,7 +149,6 @@ namespace VisualBasicDebugger.Forms.Welcome {
         private System.Windows.Forms.Label lblOpenRecentProject;
         private System.Windows.Forms.ListView lstProjects;
         private System.Windows.Forms.Label lblTitle1;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Button btnClose;
     }

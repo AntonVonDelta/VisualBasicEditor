@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -55,13 +56,17 @@ namespace VisualBasicDebugger.Forms.Welcome {
         private void btnOpenNewProject_Click(object sender, EventArgs e) {
             string projectPath;
             FormEditor formEditor;
+            CommonOpenFileDialog folderBrowserDialog = new CommonOpenFileDialog();
 
-            if (folderBrowserDialog1.ShowDialog() != DialogResult.OK) {
+            folderBrowserDialog.InitialDirectory = Directory.GetCurrentDirectory();
+            folderBrowserDialog.IsFolderPicker = true;
+
+            if (folderBrowserDialog.ShowDialog() != CommonFileDialogResult.Ok) {
                 return;
             }
 
-            projectPath = folderBrowserDialog1.SelectedPath;
-            formEditor = new FormEditor();
+            projectPath = folderBrowserDialog.FileName;
+            formEditor = new FormEditor(projectPath);
             formEditor.Show();
 
             Properties.Settings.Default.HistoryProjects.Add(projectPath);
@@ -80,6 +85,10 @@ namespace VisualBasicDebugger.Forms.Welcome {
         private void btnClose_MouseLeave(object sender, EventArgs e) {
             btnClose.BackColor = Color.FromArgb(251, 251, 251);
             btnClose.ForeColor = Color.Black;
+        }
+
+        private void btnClose_Click(object sender, EventArgs e) {
+            Close();
         }
     }
 }
