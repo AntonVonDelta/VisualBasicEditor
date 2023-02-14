@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VisualBasicDebugger.Forms.Editor;
 
-namespace VisualBasicDebugger {
+namespace VisualBasicDebugger.Forms.Welcome {
     public partial class FormWelcome : Form {
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HT_CAPTION = 0x2;
@@ -35,8 +37,10 @@ namespace VisualBasicDebugger {
             if (Properties.Settings.Default.HistoryProjects == null)
                 Properties.Settings.Default.HistoryProjects = new List<string>();
 
-            foreach (var project in Properties.Settings.Default.HistoryProjects) {
-                lstProjects.Items.Add(project);
+            foreach (var projectPath in Properties.Settings.Default.HistoryProjects) {
+                var item = new ListViewItem(Path.GetFileName(projectPath));
+                item.SubItems.Add(projectPath);
+                lstProjects.Items.Add(item);
             }
 
             lblTitle1.MouseDown += (object mouseSender, MouseEventArgs mouseArgs) => {
@@ -49,15 +53,33 @@ namespace VisualBasicDebugger {
         }
 
         private void btnOpenNewProject_Click(object sender, EventArgs e) {
-            FormEditor formEditor = new FormEditor();
+            string projectPath;
+            FormEditor formEditor;
+
+            if (folderBrowserDialog1.ShowDialog() != DialogResult.OK) {
+                return;
+            }
+
+            projectPath = folderBrowserDialog1.SelectedPath;
+            formEditor = new FormEditor();
             formEditor.Show();
 
-            Properties.Settings.Default.HistoryProjects.Add(@"C:\Users\Sergiu\Documents\Git Clones\obs-studio");
+            Properties.Settings.Default.HistoryProjects.Add(projectPath);
             Properties.Settings.Default.Save();
         }
 
         private void borderPanel_MouseDown(object sender, MouseEventArgs e) {
             RedirectMouseInputToForm(e);
+        }
+
+        private void btnClose_MouseEnter(object sender, EventArgs e) {
+            btnClose.BackColor = Color.Red;
+            btnClose.ForeColor = Color.White;
+        }
+
+        private void btnClose_MouseLeave(object sender, EventArgs e) {
+            btnClose.BackColor = Color.FromArgb(251, 251, 251);
+            btnClose.ForeColor = Color.Black;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VisualBasicDebugger.Forms.Welcome;
 
 namespace VisualBasicDebugger {
     static class Program {

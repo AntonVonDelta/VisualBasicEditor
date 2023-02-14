@@ -13,7 +13,7 @@ using ScintillaNET;
 using System.Threading.Tasks;
 using VisualBasicDebugger.Parser.Coloring;
 
-namespace VisualBasicDebugger {
+namespace VisualBasicDebugger.Forms.Editor {
     public partial class FormEditor : Form {
         private Tuple<int, VisualBasic6Parser.StartRuleContext> cachedTree;
         private Task<VisualBasic6Parser.StartRuleContext> _stylingTask;

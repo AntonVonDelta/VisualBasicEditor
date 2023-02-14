@@ -1,7 +1,7 @@
 ﻿using ScintillaNET;
 using VisualBasicDebugger.Properties;
 
-namespace VisualBasicDebugger {
+namespace VisualBasicDebugger.Forms.Editor {
     partial class FormEditor {
         /// <summary>
         /// Required designer variable.
