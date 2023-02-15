@@ -213,6 +213,11 @@ namespace VisualBasicDebugger.Parser.Coloring {
             var variableType = context.asTypeClause()?.type_()?.GetText() ?? "Variant";
 
             _scope.Add(new VariableData() { Name = variableName, Type = variableType });
+
+            if (!ShouldStyle(context.start.Line)) return;
+
+            _doc.StartStyling(context.ambiguousIdentifier().start.StartIndex);
+            _doc.SetStyling(context.ambiguousIdentifier().GetText().Length, 2);
         }
 
         // Color the variable type in 'dim a as type'
