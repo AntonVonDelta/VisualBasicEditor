@@ -34,15 +34,19 @@ namespace VisualBasicDebugger.Forms.Welcome {
             }
         }
 
+        private void OpenProject(string projectPath) {
+            Properties.Settings.Default.HistoryProjects.Add(projectPath);
+            Properties.Settings.Default.Save();
+
+            LoadProject(projectPath);
+        }
+
         private void LoadProject(string projectPath) {
             FormEditor formEditor;
 
             formEditor = new FormEditor(projectPath);
             formEditor.FormClosed += (object editorSender, FormClosedEventArgs editorArgs) => { Close(); };
             formEditor.Show();
-
-            Properties.Settings.Default.HistoryProjects.Add(projectPath);
-            Properties.Settings.Default.Save();
 
             Hide();
         }
@@ -79,7 +83,7 @@ namespace VisualBasicDebugger.Forms.Welcome {
 
             projectPath = folderBrowserDialog.FileName;
 
-            LoadProject(projectPath);
+            OpenProject(projectPath);
         }
 
         private void borderPanel_MouseDown(object sender, MouseEventArgs e) {

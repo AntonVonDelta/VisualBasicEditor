@@ -13,12 +13,15 @@ using ScintillaNET;
 using System.Threading.Tasks;
 using VisualBasicDebugger.Parser.Coloring;
 using System.IO;
+using System.Text.RegularExpressions;
+using VisualBasicDebugger.Parser.Scope;
 
 namespace VisualBasicDebugger.Forms.Editor {
     public partial class FormEditor : Form {
         private string _projectPath;
         private Tuple<int, VisualBasic6Parser.StartRuleContext> cachedTree;
         private Task<VisualBasic6Parser.StartRuleContext> _stylingTask;
+        private Task<VisualBasic6Parser.StartRuleContext> _completionTask;
         private TaskCompletionSource<bool> _closeFormTask;
 
         public FormEditor(string projectPath) {
@@ -136,6 +139,39 @@ namespace VisualBasicDebugger.Forms.Editor {
             } catch { }
         }
 
+        private async void StartCompletion() {
+            VisualBasic6Parser.StartRuleContext tree;
+            VariablesListener variablesListener = new VariablesListener();
+            List<string> allScopesVariables;
+            Regex lastTypedWord = new Regex(@"\w+$");
+            int lineToCursorLength = mainTextEditor.CurrentPosition - mainTextEditor.Lines[mainTextEditor.CurrentLine].Position;
+            string lineUptoCursor = mainTextEditor.GetTextRange(mainTextEditor.Lines[mainTextEditor.CurrentLine].Position, lineToCursorLength);
+            Match typedWordMatch = lastTypedWord.Match(lineUptoCursor);
+            string typedWord;
+
+            if (_completionTask != null && !_completionTask.IsCompleted) return;
+            if (!typedWordMatch.Success) return;
+            typedWord = typedWordMatch.Value;
+
+            _completionTask = GetTree(mainTextEditor.Text);
+            tree = await _stylingTask;
+
+            if (tree == null) return;
+
+            try {
+                var parserTreeWalker = new ParseTreeWalker();
+
+                parserTreeWalker.Walk(variablesListener, tree);
+
+            } catch { return; }
+
+            allScopesVariables = variablesListener.Result;
+            if (allScopesVariables.Count == 0) return;
+
+            var similarWords = allScopesVariables.Where(el => el.ToLower().StartsWith(typedWord.ToLower())).ToList();
+            mainTextEditor.AutoCShow(typedWord.Length, string.Join(" ", similarWords));
+        }
+
         private void SetChangeHistory(int changeHistory) {
             // This is needed for history changes to work
             mainTextEditor.EmptyUndoBuffer();
@@ -199,6 +235,10 @@ namespace VisualBasicDebugger.Forms.Editor {
             SetChangeHistory(3);
             PopulateTabs();
 
+            if (tabDocuments.TabPages.Count != 0) {
+                LoadDocumentFromPath((string)tabDocuments.TabPages[0].Tag);
+            }
+
             mainTextEditor.Margins[1].Width = 20;
 
             mainTextEditor.StyleNeeded += (object eventSender, StyleNeededEventArgs eventArgs) => {
@@ -224,7 +264,7 @@ namespace VisualBasicDebugger.Forms.Editor {
             };
 
             mainTextEditor.CharAdded += (object eventSender, CharAddedEventArgs eventArgs) => {
-                Console.WriteLine($"{mainTextEditor.SelectionStart}, {mainTextEditor.SelectionEnd}");
+                StartCompletion();
             };
         }
 

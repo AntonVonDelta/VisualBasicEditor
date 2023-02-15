@@ -43,5 +43,15 @@ namespace VisualBasicDebugger.Utils {
         public void ReverseCheckpoint() {
             _store.Pop();
         }
+
+        public List<T> Flatten() {
+            List<T> result = new List<T>();
+
+            foreach (var scope in _store) {
+                result.AddRange(scope);
+            }
+
+            return result;
+        }
     }
 }
