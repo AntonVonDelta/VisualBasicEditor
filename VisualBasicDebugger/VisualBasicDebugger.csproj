@@ -98,6 +98,8 @@
     <Compile Include="Forms\Welcome\FormWelcome.Designer.cs">
       <DependentUpon>FormWelcome.cs</DependentUpon>
     </Compile>
+    <Compile Include="Managers\DocumentManager.cs" />
+    <Compile Include="Managers\SolutionManager.cs" />
     <Compile Include="Parser\Coloring\ColoringListener.cs" />
     <Compile Include="Parser\Tracer\TraceForEach.cs" />
     <Compile Include="Parser\Tracer\TracerLetStmt.cs" />

@@ -34,13 +34,26 @@ namespace VisualBasicDebugger.Forms.Welcome {
             }
         }
 
+        private void LoadProject(string projectPath) {
+            FormEditor formEditor;
+
+            formEditor = new FormEditor(projectPath);
+            formEditor.FormClosed += (object editorSender, FormClosedEventArgs editorArgs) => { Close(); };
+            formEditor.Show();
+
+            Properties.Settings.Default.HistoryProjects.Add(projectPath);
+            Properties.Settings.Default.Save();
+
+            Hide();
+        }
+
         private void FormWelcome_Load(object sender, EventArgs e) {
             if (Properties.Settings.Default.HistoryProjects == null)
                 Properties.Settings.Default.HistoryProjects = new List<string>();
 
             foreach (var projectPath in Properties.Settings.Default.HistoryProjects) {
                 var item = new ListViewItem(Path.GetFileName(projectPath));
-                item.SubItems.Add(projectPath);
+                item.Tag = projectPath;
                 lstProjects.Items.Add(item);
             }
 
@@ -55,7 +68,6 @@ namespace VisualBasicDebugger.Forms.Welcome {
 
         private void btnOpenNewProject_Click(object sender, EventArgs e) {
             string projectPath;
-            FormEditor formEditor;
             CommonOpenFileDialog folderBrowserDialog = new CommonOpenFileDialog();
 
             folderBrowserDialog.InitialDirectory = Directory.GetCurrentDirectory();
@@ -66,14 +78,8 @@ namespace VisualBasicDebugger.Forms.Welcome {
             }
 
             projectPath = folderBrowserDialog.FileName;
-            formEditor = new FormEditor(projectPath);
-            formEditor.FormClosed += (object editorSender, FormClosedEventArgs editorArgs) => { Close(); };
-            formEditor.Show();
 
-            Properties.Settings.Default.HistoryProjects.Add(projectPath);
-            Properties.Settings.Default.Save();
-
-            Hide();
+            LoadProject(projectPath);
         }
 
         private void borderPanel_MouseDown(object sender, MouseEventArgs e) {
@@ -92,6 +98,10 @@ namespace VisualBasicDebugger.Forms.Welcome {
 
         private void btnClose_Click(object sender, EventArgs e) {
             Close();
+        }
+
+        private void lstProjects_DoubleClick(object sender, EventArgs e) {
+            LoadProject((string)lstProjects.SelectedItems[0].Tag);
         }
     }
 }

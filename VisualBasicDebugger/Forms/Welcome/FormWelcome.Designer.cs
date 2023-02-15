@@ -25,13 +25,13 @@ namespace VisualBasicDebugger.Forms.Welcome {
         /// </summary>
         private void InitializeComponent() {
             this.borderPanel = new System.Windows.Forms.Panel();
+            this.btnClose = new System.Windows.Forms.Button();
             this.btnOpenNewProject = new System.Windows.Forms.Button();
             this.lblTitle2 = new System.Windows.Forms.Label();
             this.lblTitle1 = new System.Windows.Forms.Label();
             this.lblOpenRecentProject = new System.Windows.Forms.Label();
             this.lstProjects = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnClose = new System.Windows.Forms.Button();
             this.borderPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,6 +49,22 @@ namespace VisualBasicDebugger.Forms.Welcome {
             this.borderPanel.Size = new System.Drawing.Size(800, 450);
             this.borderPanel.TabIndex = 5;
             this.borderPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.borderPanel_MouseDown);
+            // 
+            // btnClose
+            // 
+            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(251)))), ((int)(((byte)(251)))));
+            this.btnClose.FlatAppearance.BorderSize = 0;
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.Location = new System.Drawing.Point(765, 0);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(35, 35);
+            this.btnClose.TabIndex = 10;
+            this.btnClose.Text = "X";
+            this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.btnClose.MouseEnter += new System.EventHandler(this.btnClose_MouseEnter);
+            this.btnClose.MouseLeave += new System.EventHandler(this.btnClose_MouseLeave);
             // 
             // btnOpenNewProject
             // 
@@ -106,22 +122,7 @@ namespace VisualBasicDebugger.Forms.Welcome {
             this.lstProjects.TabIndex = 6;
             this.lstProjects.TileSize = new System.Drawing.Size(100, 100);
             this.lstProjects.UseCompatibleStateImageBehavior = false;
-            // 
-            // btnClose
-            // 
-            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(251)))), ((int)(((byte)(251)))));
-            this.btnClose.FlatAppearance.BorderSize = 0;
-            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.Location = new System.Drawing.Point(765, 0);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(35, 35);
-            this.btnClose.TabIndex = 10;
-            this.btnClose.Text = "X";
-            this.btnClose.UseVisualStyleBackColor = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            this.btnClose.MouseEnter += new System.EventHandler(this.btnClose_MouseEnter);
-            this.btnClose.MouseLeave += new System.EventHandler(this.btnClose_MouseLeave);
+            this.lstProjects.DoubleClick += new System.EventHandler(this.lstProjects_DoubleClick);
             // 
             // FormWelcome
             // 

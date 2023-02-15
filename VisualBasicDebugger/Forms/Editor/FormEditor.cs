@@ -173,9 +173,14 @@ namespace VisualBasicDebugger.Forms.Editor {
         }
 
         private void PopulateTabs() {
-            foreach (var file in Directory.GetFiles(_projectPath)) {
-                TabPage documentTitleTab = new TabPage(Path.GetFileName(file));
+            List<string> extensionsWhiteList = new List<string>() { ".vbp", ".frm", ".vbg", ".bas" };
 
+            foreach (var file in Directory.GetFiles(_projectPath)) {
+                TabPage documentTitleTab;
+
+                if (!extensionsWhiteList.Contains(Path.GetExtension(file))) continue;
+
+                documentTitleTab = new TabPage(Path.GetFileName(file));
                 documentTitleTab.Tag = file;
                 tabDocuments.TabPages.Add(documentTitleTab);
             }
@@ -217,6 +222,10 @@ namespace VisualBasicDebugger.Forms.Editor {
             mainTextEditor.ZoomChanged += (object eventSender, EventArgs eventArgs) => {
                 UpdateLineNumbers();
             };
+
+            mainTextEditor.CharAdded += (object eventSender, CharAddedEventArgs eventArgs) => {
+                Console.WriteLine($"{mainTextEditor.SelectionStart}, {mainTextEditor.SelectionEnd}");
+            };
         }
 
         private static string GetIndexesForList(List<TraceVariableData> list) {
@@ -226,6 +235,25 @@ namespace VisualBasicDebugger.Forms.Editor {
                 result.Add($"{list[i].Name} {{{i}}}");
             }
             return string.Join(", ", result);
+        }
+
+        private async void FormEditor_FormClosing(object sender, FormClosingEventArgs e) {
+            var cancelCloseTask = ShouldCancelClose();
+
+            if (cancelCloseTask.IsCompleted) {
+                if (await cancelCloseTask) e.Cancel = true;
+                return;
+            }
+
+            e.Cancel = true;
+
+            if (!await cancelCloseTask) {
+                Close();
+            }
+        }
+
+        private void tabDocuments_Selected(object sender, TabControlEventArgs e) {
+            LoadDocumentFromPath((string)e.TabPage.Tag);
         }
 
         private async void btnGenerateTraceCode_Click(object sender, EventArgs e) {
@@ -258,25 +286,6 @@ namespace VisualBasicDebugger.Forms.Editor {
             }
 
             mainTextEditor.Text = string.Join("\n", lines);
-        }
-
-        private async void FormEditor_FormClosing(object sender, FormClosingEventArgs e) {
-            var cancelCloseTask = ShouldCancelClose();
-
-            if (cancelCloseTask.IsCompleted) {
-                if (await cancelCloseTask) e.Cancel = true;
-                return;
-            }
-
-            e.Cancel = true;
-
-            if (!await cancelCloseTask) {
-                Close();
-            }
-        }
-
-        private void tabDocuments_Selected(object sender, TabControlEventArgs e) {
-            LoadDocumentFromPath((string)e.TabPage.Tag);
         }
     }
 }

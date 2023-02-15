@@ -27,10 +27,6 @@ namespace VisualBasicDebugger.Parser.Coloring {
             _stopLine = stopLine;
         }
 
-        private bool ShouldStyle(int line) {
-            return true;// _startLine <= line && line <= _stopLine;
-        }
-
         private void AddFunctionScope(VisualBasic6Parser.FunctionStmtContext context) {
             var functionName = context.ambiguousIdentifier().GetText();
             var functionType = context.asTypeClause()?.type_()?.GetText() ?? "Variant";
@@ -72,8 +68,6 @@ namespace VisualBasicDebugger.Parser.Coloring {
         public override void EnterFunctionStmt(VisualBasic6Parser.FunctionStmtContext context) {
             AddFunctionScope(context);
 
-            if (!ShouldStyle(context.start.Line)) return;
-
             // Clear previous styling
             _doc.StartStyling(context.start.StartIndex);
             _doc.SetStyling(context.GetText().Length, 0);
@@ -104,8 +98,6 @@ namespace VisualBasicDebugger.Parser.Coloring {
 
         public override void EnterSubStmt(VisualBasic6Parser.SubStmtContext context) {
             AddSubScope(context);
-
-            if (!ShouldStyle(context.start.Line)) return;
 
             // Clear previous styling
             _doc.StartStyling(context.start.StartIndex);
@@ -164,8 +156,6 @@ namespace VisualBasicDebugger.Parser.Coloring {
 
         // Color for syntax
         public override void EnterForEachStmt(VisualBasic6Parser.ForEachStmtContext context) {
-            if (!ShouldStyle(context.start.Line)) return;
-
             _doc.StartStyling(context.FOR().Symbol.StartIndex);
             _doc.SetStyling(context.FOR().GetText().Length, 1);
 
@@ -180,8 +170,6 @@ namespace VisualBasicDebugger.Parser.Coloring {
         }
 
         public override void EnterForNextStmt(VisualBasic6Parser.ForNextStmtContext context) {
-            if (!ShouldStyle(context.start.Line)) return;
-
             _doc.StartStyling(context.FOR().Symbol.StartIndex);
             _doc.SetStyling(context.FOR().GetText().Length, 1);
 
@@ -191,8 +179,6 @@ namespace VisualBasicDebugger.Parser.Coloring {
 
         // Color while syntax
         public override void EnterWhileWendStmt(VisualBasic6Parser.WhileWendStmtContext context) {
-            if (!ShouldStyle(context.start.Line)) return;
-
             _doc.StartStyling(context.WHILE().Symbol.StartIndex);
             _doc.SetStyling(context.WHILE().GetText().Length, 1);
 
@@ -200,10 +186,39 @@ namespace VisualBasicDebugger.Parser.Coloring {
             _doc.SetStyling(context.WEND().GetText().Length, 1);
         }
 
+        public override void EnterInlineIfThenElse(VisualBasic6Parser.InlineIfThenElseContext context) {
+            _doc.StartStyling(context.IF().Symbol.StartIndex);
+            _doc.SetStyling(context.IF().GetText().Length, 1);
+
+            _doc.StartStyling(context.THEN().Symbol.StartIndex);
+            _doc.SetStyling(context.THEN().GetText().Length, 1);
+        }
+
+
+        // Color if statements
+        public override void EnterIfBlockStmt(VisualBasic6Parser.IfBlockStmtContext context) {
+            _doc.StartStyling(context.IF().Symbol.StartIndex);
+            _doc.SetStyling(context.IF().GetText().Length, 1);
+
+            _doc.StartStyling(context.THEN().Symbol.StartIndex);
+            _doc.SetStyling(context.THEN().GetText().Length, 1);
+        }
+        public override void EnterIfElseIfBlockStmt(VisualBasic6Parser.IfElseIfBlockStmtContext context) {
+            _doc.StartStyling(context.ELSEIF().Symbol.StartIndex);
+            _doc.SetStyling(context.ELSEIF().GetText().Length, 1);
+        }
+        public override void EnterIfElseBlockStmt(VisualBasic6Parser.IfElseBlockStmtContext context) {
+            _doc.StartStyling(context.ELSE().Symbol.StartIndex);
+            _doc.SetStyling(context.ELSE().GetText().Length, 1);
+        }
+        public override void EnterBlockIfThenElse(VisualBasic6Parser.BlockIfThenElseContext context) {
+            _doc.StartStyling(context.END_IF().Symbol.StartIndex);
+            _doc.SetStyling(context.END_IF().GetText().Length, 1);
+        }
+
+
         // Color the 'dim' keyword from 'dim a as type'
         public override void EnterVariableStmt(VisualBasic6Parser.VariableStmtContext context) {
-            if (!ShouldStyle(context.start.Line)) return;
-
             _doc.StartStyling(context.DIM().Symbol.StartIndex);
             _doc.SetStyling(context.DIM().GetText().Length, 1);
         }
@@ -214,24 +229,18 @@ namespace VisualBasicDebugger.Parser.Coloring {
 
             _scope.Add(new VariableData() { Name = variableName, Type = variableType });
 
-            if (!ShouldStyle(context.start.Line)) return;
-
             _doc.StartStyling(context.ambiguousIdentifier().start.StartIndex);
             _doc.SetStyling(context.ambiguousIdentifier().GetText().Length, 2);
         }
 
         // Color the variable type in 'dim a as type'
         public override void EnterType_(VisualBasic6Parser.Type_Context context) {
-            if (!ShouldStyle(context.start.Line)) return;
-
             _doc.StartStyling(context.start.StartIndex);
             _doc.SetStyling(context.GetText().Length, 1);
         }
 
         // Color set in 'set a=b'
         public override void EnterSetStmt(VisualBasic6Parser.SetStmtContext context) {
-            if (!ShouldStyle(context.start.Line)) return;
-
             _doc.StartStyling(context.SET().Symbol.StartIndex);
             _doc.SetStyling(context.SET().GetText().Length, 1);
         }
@@ -239,7 +248,6 @@ namespace VisualBasicDebugger.Parser.Coloring {
         public override void EnterICS_S_VariableOrProcedureCall(VisualBasic6Parser.ICS_S_VariableOrProcedureCallContext context) {
             var itemName = context.ambiguousIdentifier().GetText();
 
-            if (!ShouldStyle(context.start.Line)) return;
             if (_scope.Contains(el => el.Name.ToLower() == itemName.ToLower())) {
                 _doc.StartStyling(context.ambiguousIdentifier().start.StartIndex);
                 _doc.SetStyling(context.ambiguousIdentifier().GetText().Length, 2);
@@ -247,17 +255,18 @@ namespace VisualBasicDebugger.Parser.Coloring {
         }
 
         public override void EnterICS_S_ProcedureOrArrayCall(VisualBasic6Parser.ICS_S_ProcedureOrArrayCallContext context) {
-            if (!ShouldStyle(context.start.Line)) return;
-
             _doc.StartStyling(context.ambiguousIdentifier().start.StartIndex);
             _doc.SetStyling(context.ambiguousIdentifier().GetText().Length, 3);
         }
 
         public override void EnterGoToStmt(VisualBasic6Parser.GoToStmtContext context) {
-            if (!ShouldStyle(context.start.Line)) return;
-
             _doc.StartStyling(context.GOTO().Symbol.StartIndex);
             _doc.SetStyling(context.GOTO().GetText().Length, 1);
+        }
+
+        public override void EnterVsLiteral(VisualBasic6Parser.VsLiteralContext context) {
+            _doc.StartStyling(context.start.StartIndex);
+            _doc.SetStyling(context.GetText().Length, 1);
         }
     }
 }

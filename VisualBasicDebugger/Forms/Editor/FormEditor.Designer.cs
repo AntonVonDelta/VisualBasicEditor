@@ -28,8 +28,8 @@ namespace VisualBasicDebugger.Forms.Editor {
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormEditor));
             this.tableLayoutPrincipal = new System.Windows.Forms.TableLayoutPanel();
-            this.tabDocuments = new System.Windows.Forms.TabControl();
             this.mainTextEditor = new ScintillaNET.Scintilla();
+            this.tabDocuments = new System.Windows.Forms.TabControl();
             this.tableLayoutSideRight = new System.Windows.Forms.TableLayoutPanel();
             this.btnGenerateTraceCode = new System.Windows.Forms.Button();
             this.tableLayoutPrincipal.SuspendLayout();
@@ -53,17 +53,6 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.tableLayoutPrincipal.Size = new System.Drawing.Size(1253, 716);
             this.tableLayoutPrincipal.TabIndex = 8;
             // 
-            // tabDocuments
-            // 
-            this.tabDocuments.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabDocuments.HotTrack = true;
-            this.tabDocuments.Location = new System.Drawing.Point(3, 3);
-            this.tabDocuments.Name = "tabDocuments";
-            this.tabDocuments.SelectedIndex = 0;
-            this.tabDocuments.Size = new System.Drawing.Size(1097, 20);
-            this.tabDocuments.TabIndex = 10;
-            this.tabDocuments.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabDocuments_Selected);
-            // 
             // mainTextEditor
             // 
             this.mainTextEditor.AutoCMaxHeight = 9;
@@ -83,6 +72,17 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.mainTextEditor.UseRightToLeftReadingLayout = false;
             this.mainTextEditor.WrapMode = ScintillaNET.WrapMode.None;
             // 
+            // tabDocuments
+            // 
+            this.tabDocuments.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabDocuments.HotTrack = true;
+            this.tabDocuments.Location = new System.Drawing.Point(3, 3);
+            this.tabDocuments.Name = "tabDocuments";
+            this.tabDocuments.SelectedIndex = 0;
+            this.tabDocuments.Size = new System.Drawing.Size(1097, 20);
+            this.tabDocuments.TabIndex = 10;
+            this.tabDocuments.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabDocuments_Selected);
+            // 
             // tableLayoutSideRight
             // 
             this.tableLayoutSideRight.ColumnCount = 1;
@@ -101,12 +101,13 @@ namespace VisualBasicDebugger.Forms.Editor {
             // 
             // btnGenerateTraceCode
             // 
-            this.btnGenerateTraceCode.Location = new System.Drawing.Point(3, 510);
+            this.btnGenerateTraceCode.Location = new System.Drawing.Point(3, 511);
             this.btnGenerateTraceCode.Name = "btnGenerateTraceCode";
             this.btnGenerateTraceCode.Size = new System.Drawing.Size(133, 30);
             this.btnGenerateTraceCode.TabIndex = 13;
             this.btnGenerateTraceCode.Text = "Generate trace code";
             this.btnGenerateTraceCode.UseVisualStyleBackColor = true;
+            this.btnGenerateTraceCode.Click += new System.EventHandler(this.btnGenerateTraceCode_Click);
             // 
             // FormEditor
             // 
