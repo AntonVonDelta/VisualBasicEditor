@@ -219,8 +219,22 @@ namespace VisualBasicDebugger.Parser.Coloring {
 
         // Color the 'dim' keyword from 'dim a as type'
         public override void EnterVariableStmt(VisualBasic6Parser.VariableStmtContext context) {
-            _doc.StartStyling(context.DIM().Symbol.StartIndex);
-            _doc.SetStyling(context.DIM().GetText().Length, 1);
+            if (context.DIM() != null) {
+                _doc.StartStyling(context.DIM().Symbol.StartIndex);
+                _doc.SetStyling(context.DIM().GetText().Length, 1);
+            }
+            if (context.STATIC() != null) {
+                _doc.StartStyling(context.STATIC().Symbol.StartIndex);
+                _doc.SetStyling(context.STATIC().GetText().Length, 1);
+            }
+            if (context.visibility() != null) {
+                _doc.StartStyling(context.visibility().start.StartIndex);
+                _doc.SetStyling(context.visibility().GetText().Length, 1);
+            }
+            if (context.WITHEVENTS() != null) {
+                _doc.StartStyling(context.WITHEVENTS().Symbol.StartIndex);
+                _doc.SetStyling(context.WITHEVENTS().GetText().Length, 1);
+            }
         }
 
         public override void EnterVariableSubStmt(VisualBasic6Parser.VariableSubStmtContext context) {

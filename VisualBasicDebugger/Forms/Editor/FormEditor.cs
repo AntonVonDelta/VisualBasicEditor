@@ -239,6 +239,7 @@ namespace VisualBasicDebugger.Forms.Editor {
                 LoadDocumentFromPath((string)tabDocuments.TabPages[0].Tag);
             }
 
+            mainTextEditor.AutoCIgnoreCase = true;
             mainTextEditor.Margins[1].Width = 20;
 
             mainTextEditor.StyleNeeded += (object eventSender, StyleNeededEventArgs eventArgs) => {
