@@ -15,6 +15,7 @@ using VisualBasicDebugger.Parser.Coloring;
 using System.IO;
 using System.Text.RegularExpressions;
 using VisualBasicDebugger.Parser.Scope;
+using VisualBasicDebugger.Managers;
 
 namespace VisualBasicDebugger.Forms.Editor {
     public partial class FormEditor : Form {
@@ -24,13 +25,19 @@ namespace VisualBasicDebugger.Forms.Editor {
         private Task<VisualBasic6Parser.StartRuleContext> _completionTask;
         private TaskCompletionSource<bool> _closeFormTask;
 
+        private SolutionManager _solutionManager;
+
+
         public FormEditor(string projectPath) {
             InitializeComponent();
 
             _projectPath = projectPath;
+            _solutionManager = new SolutionManager(_projectPath);
+
+            _solutionManager.Changed += Solution_Changed;
         }
 
-
+        #region Parsing
         private Task<bool> ShouldCancelClose() {
             if (_closeFormTask == null) _closeFormTask = new TaskCompletionSource<bool>();
             return _closeFormTask.Task;
@@ -227,6 +234,13 @@ namespace VisualBasicDebugger.Forms.Editor {
                 mainTextEditor.Text = stream.ReadToEnd();
             }
         }
+        #endregion
+
+        #region SolutionEvents
+        private void Solution_Changed() {
+            MessageBox.Show("The solution was modified from outside. Do you want to reload ");
+        }
+        #endregion
 
         private void Form1_Load(object sender, EventArgs e) {
             SetStyles();
@@ -327,6 +341,14 @@ namespace VisualBasicDebugger.Forms.Editor {
             }
 
             mainTextEditor.Text = string.Join("\n", lines);
+        }
+
+        private void tabView_TabIndexChanged(object sender, EventArgs e) {
+            if (tabView.SelectedTab.Tag.Equals("Collapse")) {
+                tabView.Height = 20;
+            } else {
+                tabView.Height = 715;
+            }
         }
     }
 }

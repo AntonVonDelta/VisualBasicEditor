@@ -100,8 +100,14 @@
     </Compile>
     <Compile Include="Managers\CodeAnalysisManager.cs" />
     <Compile Include="Managers\DocumentManager.cs" />
+    <Compile Include="Managers\ProcessingMessage.cs" />
     <Compile Include="Managers\SolutionManager.cs" />
+    <Compile Include="Managers\SourceReference.cs" />
     <Compile Include="Parser\Coloring\ColoringListener.cs" />
+    <Compile Include="Parser\Scopes\BlockScope.cs" />
+    <Compile Include="Parser\Scopes\DocumentScope.cs" />
+    <Compile Include="Parser\Scopes\Scope.cs" />
+    <Compile Include="Parser\Scopes\SolutionScope.cs" />
     <Compile Include="Parser\Scope\VariablesListener.cs" />
     <Compile Include="Parser\Tracer\TraceForEach.cs" />
     <Compile Include="Parser\Tracer\TracerLetStmt.cs" />

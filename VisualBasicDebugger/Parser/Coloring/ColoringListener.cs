@@ -123,6 +123,10 @@ namespace VisualBasicDebugger.Parser.Coloring {
         }
 
         public override void EnterArgList(VisualBasic6Parser.ArgListContext context) {
+            if(context.parent is VisualBasic6Parser.DeclareStmtContext) {
+                return;
+            }
+
             foreach (var arg in context.arg()) {
                 var variableName = arg.ambiguousIdentifier().GetText();
                 var variableType = arg.asTypeClause()?.type_()?.GetText() ?? "Variant";

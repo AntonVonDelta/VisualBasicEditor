@@ -32,8 +32,12 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.tabDocuments = new System.Windows.Forms.TabControl();
             this.tableLayoutSideRight = new System.Windows.Forms.TableLayoutPanel();
             this.btnGenerateTraceCode = new System.Windows.Forms.Button();
+            this.tabView = new System.Windows.Forms.TabControl();
+            this.tabOutput = new System.Windows.Forms.TabPage();
+            this.tabCollapse = new System.Windows.Forms.TabPage();
             this.tableLayoutPrincipal.SuspendLayout();
             this.tableLayoutSideRight.SuspendLayout();
+            this.tabView.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPrincipal
@@ -41,15 +45,17 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.tableLayoutPrincipal.ColumnCount = 2;
             this.tableLayoutPrincipal.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPrincipal.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPrincipal.Controls.Add(this.tabView, 0, 2);
             this.tableLayoutPrincipal.Controls.Add(this.mainTextEditor, 0, 1);
             this.tableLayoutPrincipal.Controls.Add(this.tabDocuments, 0, 0);
             this.tableLayoutPrincipal.Controls.Add(this.tableLayoutSideRight, 1, 0);
             this.tableLayoutPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPrincipal.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPrincipal.Name = "tableLayoutPrincipal";
-            this.tableLayoutPrincipal.RowCount = 2;
+            this.tableLayoutPrincipal.RowCount = 3;
             this.tableLayoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 223F));
             this.tableLayoutPrincipal.Size = new System.Drawing.Size(1253, 716);
             this.tableLayoutPrincipal.TabIndex = 8;
             // 
@@ -65,7 +71,7 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.mainTextEditor.Location = new System.Drawing.Point(3, 29);
             this.mainTextEditor.Name = "mainTextEditor";
             this.mainTextEditor.ScrollWidth = 345;
-            this.mainTextEditor.Size = new System.Drawing.Size(1097, 684);
+            this.mainTextEditor.Size = new System.Drawing.Size(1097, 461);
             this.mainTextEditor.TabIndents = true;
             this.mainTextEditor.TabIndex = 12;
             this.mainTextEditor.Text = resources.GetString("mainTextEditor.Text");
@@ -93,7 +99,7 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.tableLayoutSideRight.Location = new System.Drawing.Point(1106, 3);
             this.tableLayoutSideRight.Name = "tableLayoutSideRight";
             this.tableLayoutSideRight.RowCount = 2;
-            this.tableLayoutPrincipal.SetRowSpan(this.tableLayoutSideRight, 2);
+            this.tableLayoutPrincipal.SetRowSpan(this.tableLayoutSideRight, 3);
             this.tableLayoutSideRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 71.54929F));
             this.tableLayoutSideRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 28.4507F));
             this.tableLayoutSideRight.Size = new System.Drawing.Size(144, 710);
@@ -109,6 +115,40 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.btnGenerateTraceCode.UseVisualStyleBackColor = true;
             this.btnGenerateTraceCode.Click += new System.EventHandler(this.btnGenerateTraceCode_Click);
             // 
+            // tabView
+            // 
+            this.tabView.Controls.Add(this.tabOutput);
+            this.tabView.Controls.Add(this.tabCollapse);
+            this.tabView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabView.HotTrack = true;
+            this.tabView.Location = new System.Drawing.Point(3, 496);
+            this.tabView.Name = "tabView";
+            this.tabView.SelectedIndex = 0;
+            this.tabView.Size = new System.Drawing.Size(1097, 217);
+            this.tabView.TabIndex = 14;
+            this.tabView.TabIndexChanged += new System.EventHandler(this.tabView_TabIndexChanged);
+            // 
+            // tabOutput
+            // 
+            this.tabOutput.Location = new System.Drawing.Point(4, 22);
+            this.tabOutput.Name = "tabOutput";
+            this.tabOutput.Padding = new System.Windows.Forms.Padding(3);
+            this.tabOutput.Size = new System.Drawing.Size(1089, 70);
+            this.tabOutput.TabIndex = 0;
+            this.tabOutput.Text = "Output";
+            this.tabOutput.UseVisualStyleBackColor = true;
+            // 
+            // tabCollapse
+            // 
+            this.tabCollapse.Location = new System.Drawing.Point(4, 22);
+            this.tabCollapse.Name = "tabCollapse";
+            this.tabCollapse.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCollapse.Size = new System.Drawing.Size(1089, 191);
+            this.tabCollapse.TabIndex = 1;
+            this.tabCollapse.Tag = "Collapse";
+            this.tabCollapse.Text = "↓";
+            this.tabCollapse.UseVisualStyleBackColor = true;
+            // 
             // FormEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -121,6 +161,7 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tableLayoutPrincipal.ResumeLayout(false);
             this.tableLayoutSideRight.ResumeLayout(false);
+            this.tabView.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -132,6 +173,9 @@ namespace VisualBasicDebugger.Forms.Editor {
         private Scintilla mainTextEditor;
         private System.Windows.Forms.TableLayoutPanel tableLayoutSideRight;
         private System.Windows.Forms.Button btnGenerateTraceCode;
+        private System.Windows.Forms.TabControl tabView;
+        private System.Windows.Forms.TabPage tabOutput;
+        private System.Windows.Forms.TabPage tabCollapse;
     }
 }
 
