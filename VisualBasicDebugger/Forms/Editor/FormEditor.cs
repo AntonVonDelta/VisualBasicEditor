@@ -16,9 +16,10 @@ using System.IO;
 using System.Text.RegularExpressions;
 using VisualBasicDebugger.Parser.Scope;
 using VisualBasicDebugger.Managers;
+using VisualBasicDebugger.Managers.Editors;
 
 namespace VisualBasicDebugger.Forms.Editor {
-    public partial class FormEditor : Form {
+    public partial class FormEditor : Form, IMainView, IMainEditor, IMainExplorer {
         private string _projectPath;
         private Tuple<int, VisualBasic6Parser.StartRuleContext> cachedTree;
         private Task<VisualBasic6Parser.StartRuleContext> _stylingTask;
@@ -343,12 +344,16 @@ namespace VisualBasicDebugger.Forms.Editor {
             mainTextEditor.Text = string.Join("\n", lines);
         }
 
-        private void tabView_TabIndexChanged(object sender, EventArgs e) {
-            if (tabView.SelectedTab.Tag.Equals("Collapse")) {
+        private void tabView_SelectedIndexChanged(object sender, EventArgs e) {
+            if (tabView.SelectedTab.Tag != null && tabView.SelectedTab.Tag.Equals("Collapse")) {
                 tabView.Height = 20;
             } else {
-                tabView.Height = 715;
+                tabView.Height = 250;
             }
+        }
+
+        public void SetEditor(Scintilla editor) {
+            mainTextEditor = editor;
         }
     }
 }

@@ -32,9 +32,10 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.tabDocuments = new System.Windows.Forms.TabControl();
             this.tableLayoutSideRight = new System.Windows.Forms.TableLayoutPanel();
             this.btnGenerateTraceCode = new System.Windows.Forms.Button();
-            this.tabView = new System.Windows.Forms.TabControl();
-            this.tabOutput = new System.Windows.Forms.TabPage();
             this.tabCollapse = new System.Windows.Forms.TabPage();
+            this.tabOutput = new System.Windows.Forms.TabPage();
+            this.tabView = new System.Windows.Forms.TabControl();
+            this.treeSolutionView = new System.Windows.Forms.TreeView();
             this.tableLayoutPrincipal.SuspendLayout();
             this.tableLayoutSideRight.SuspendLayout();
             this.tabView.SuspendLayout();
@@ -55,7 +56,7 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.tableLayoutPrincipal.RowCount = 3;
             this.tableLayoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 223F));
+            this.tableLayoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPrincipal.Size = new System.Drawing.Size(1253, 716);
             this.tableLayoutPrincipal.TabIndex = 8;
             // 
@@ -95,6 +96,7 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.tableLayoutSideRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutSideRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutSideRight.Controls.Add(this.btnGenerateTraceCode, 0, 1);
+            this.tableLayoutSideRight.Controls.Add(this.treeSolutionView, 0, 0);
             this.tableLayoutSideRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutSideRight.Location = new System.Drawing.Point(1106, 3);
             this.tableLayoutSideRight.Name = "tableLayoutSideRight";
@@ -115,6 +117,27 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.btnGenerateTraceCode.UseVisualStyleBackColor = true;
             this.btnGenerateTraceCode.Click += new System.EventHandler(this.btnGenerateTraceCode_Click);
             // 
+            // tabCollapse
+            // 
+            this.tabCollapse.Location = new System.Drawing.Point(4, 22);
+            this.tabCollapse.Name = "tabCollapse";
+            this.tabCollapse.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCollapse.Size = new System.Drawing.Size(1089, 191);
+            this.tabCollapse.TabIndex = 1;
+            this.tabCollapse.Tag = "Collapse";
+            this.tabCollapse.Text = "↓";
+            this.tabCollapse.UseVisualStyleBackColor = true;
+            // 
+            // tabOutput
+            // 
+            this.tabOutput.Location = new System.Drawing.Point(4, 22);
+            this.tabOutput.Name = "tabOutput";
+            this.tabOutput.Padding = new System.Windows.Forms.Padding(3);
+            this.tabOutput.Size = new System.Drawing.Size(1089, 191);
+            this.tabOutput.TabIndex = 0;
+            this.tabOutput.Text = "Output";
+            this.tabOutput.UseVisualStyleBackColor = true;
+            // 
             // tabView
             // 
             this.tabView.Controls.Add(this.tabOutput);
@@ -126,28 +149,15 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.tabView.SelectedIndex = 0;
             this.tabView.Size = new System.Drawing.Size(1097, 217);
             this.tabView.TabIndex = 14;
-            this.tabView.TabIndexChanged += new System.EventHandler(this.tabView_TabIndexChanged);
+            this.tabView.SelectedIndexChanged += new System.EventHandler(this.tabView_SelectedIndexChanged);
             // 
-            // tabOutput
+            // treeSolutionView
             // 
-            this.tabOutput.Location = new System.Drawing.Point(4, 22);
-            this.tabOutput.Name = "tabOutput";
-            this.tabOutput.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOutput.Size = new System.Drawing.Size(1089, 70);
-            this.tabOutput.TabIndex = 0;
-            this.tabOutput.Text = "Output";
-            this.tabOutput.UseVisualStyleBackColor = true;
-            // 
-            // tabCollapse
-            // 
-            this.tabCollapse.Location = new System.Drawing.Point(4, 22);
-            this.tabCollapse.Name = "tabCollapse";
-            this.tabCollapse.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCollapse.Size = new System.Drawing.Size(1089, 191);
-            this.tabCollapse.TabIndex = 1;
-            this.tabCollapse.Tag = "Collapse";
-            this.tabCollapse.Text = "↓";
-            this.tabCollapse.UseVisualStyleBackColor = true;
+            this.treeSolutionView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeSolutionView.Location = new System.Drawing.Point(3, 3);
+            this.treeSolutionView.Name = "treeSolutionView";
+            this.treeSolutionView.Size = new System.Drawing.Size(138, 502);
+            this.treeSolutionView.TabIndex = 14;
             // 
             // FormEditor
             // 
@@ -176,6 +186,7 @@ namespace VisualBasicDebugger.Forms.Editor {
         private System.Windows.Forms.TabControl tabView;
         private System.Windows.Forms.TabPage tabOutput;
         private System.Windows.Forms.TabPage tabCollapse;
+        private System.Windows.Forms.TreeView treeSolutionView;
     }
 }
 
