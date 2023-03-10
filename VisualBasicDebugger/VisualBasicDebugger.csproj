@@ -92,8 +92,9 @@
     <Compile Include="Forms\Editor\FormEditor.Designer.cs">
       <DependentUpon>FormEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Editor\IMainEditor.cs" />
-    <Compile Include="Forms\Editor\IMainExplorer.cs" />
+    <Compile Include="Forms\Editor\ICodeView.cs" />
+    <Compile Include="Forms\Editor\IFormView.cs" />
+    <Compile Include="Forms\Editor\IExplorerView.cs" />
     <Compile Include="Forms\Editor\IMainView.cs" />
     <Compile Include="Forms\Welcome\FormWelcome.cs">
       <SubType>Form</SubType>
@@ -101,22 +102,21 @@
     <Compile Include="Forms\Welcome\FormWelcome.Designer.cs">
       <DependentUpon>FormWelcome.cs</DependentUpon>
     </Compile>
-    <Compile Include="Managers\CodeAnalysisManager.cs" />
-    <Compile Include="Managers\DocumentManager.cs" />
+    <Compile Include="Managers\Solution\CodeAnalysis\CodeAnalysisManager.cs" />
+    <Compile Include="Managers\Solution\Documents\Document.cs" />
     <Compile Include="Managers\Editors\BaseEditor.cs" />
     <Compile Include="Managers\Editors\TextEditor.cs" />
     <Compile Include="Managers\Editors\VBCodeEditor.cs" />
     <Compile Include="Managers\ProcessingMessage.cs" />
-    <Compile Include="Managers\SolutionManager.cs" />
-    <Compile Include="Managers\SolutionStructure\Hierarchy.cs" />
-    <Compile Include="Managers\SolutionStructure\ProjectFile.cs" />
-    <Compile Include="Managers\SolutionStructure\ProjectFolder.cs" />
+    <Compile Include="Managers\Project\ProjectManager.cs" />
+    <Compile Include="Managers\Solution\Documents\TextDocument.cs" />
+    <Compile Include="Managers\Solution\Documents\VBDocument.cs" />
+    <Compile Include="Managers\Solution\SolutionManager.cs" />
+    <Compile Include="Managers\Solution\SolutionStructure\Hierarchy.cs" />
+    <Compile Include="Managers\Solution\SolutionStructure\ProjectFile.cs" />
+    <Compile Include="Managers\Solution\SolutionStructure\ProjectFolder.cs" />
     <Compile Include="Managers\SourceReference.cs" />
     <Compile Include="Parser\Coloring\ColoringListener.cs" />
-    <Compile Include="Parser\Scopes\BlockScope.cs" />
-    <Compile Include="Parser\Scopes\DocumentScope.cs" />
-    <Compile Include="Parser\Scopes\Scope.cs" />
-    <Compile Include="Parser\Scopes\SolutionScope.cs" />
     <Compile Include="Parser\Scope\VariablesListener.cs" />
     <Compile Include="Parser\Tracer\TraceForEach.cs" />
     <Compile Include="Parser\Tracer\TracerLetStmt.cs" />
@@ -127,7 +127,7 @@
     <Compile Include="Utils\CaseInsensitiveStream.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Managers\SolutionStructure\VisualBasicFiles.cs" />
+    <Compile Include="Managers\Solution\SolutionStructure\VisualBasicFiles.cs" />
     <EmbeddedResource Include="Forms\Editor\FormEditor.resx">
       <DependentUpon>FormEditor.cs</DependentUpon>
     </EmbeddedResource>

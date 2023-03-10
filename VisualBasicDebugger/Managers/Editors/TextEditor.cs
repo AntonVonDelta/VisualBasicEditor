@@ -7,8 +7,6 @@ using VisualBasicDebugger.Forms.Editor;
 
 namespace VisualBasicDebugger.Managers.Editors {
     public class TextEditor : BaseEditor {
-        public TextEditor(IMainView view) : base(view) {
 
-        }
     }
 }

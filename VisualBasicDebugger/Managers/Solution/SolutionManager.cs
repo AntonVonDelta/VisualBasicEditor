@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VisualBasicDebugger.Forms.Editor;
-using VisualBasicDebugger.Managers.SolutionStructure;
-using VisualBasicDebugger.Parser.Scopes;
-using VisualBasicDebugger.SolutionStructure;
+using VisualBasicDebugger.Managers.Solution.SolutionStructure;
+using VisualBasicDebugger.Managers.Solution.Documents;
 
-namespace VisualBasicDebugger.Managers {
+namespace VisualBasicDebugger.Managers.Solution {
     public class SolutionManager {
         private enum SolutionState {
             Closed,
@@ -17,22 +16,19 @@ namespace VisualBasicDebugger.Managers {
             Busy
         }
 
-        private IMainView _view;
         private string _projectPath;
         private SolutionState _state;
         private Hierarchy _hierarchy;
-        private List<DocumentManager> _documents = new List<DocumentManager>();
-        private SolutionScope _scope;
         private List<ProcessingMessage> _messages = new List<ProcessingMessage>();
-
+        private List<Document> _documents = new List<Document>();
+        private CodeAnalysisManager _codeAnalysisManager = new CodeAnalysisManager();
 
         public List<ProcessingMessage> Messages { get => _messages; }
 
         public event Action Closed;
         public event Action Changed;
 
-        public SolutionManager(IMainView view) {
-            _view = view;
+        public SolutionManager() {
         }
 
         public void OpenSolution(string projectPath) {
@@ -40,31 +36,30 @@ namespace VisualBasicDebugger.Managers {
 
             _projectPath = projectPath;
             _hierarchy = new Hierarchy(_projectPath);
-            _scope = new SolutionScope(this);
 
             LoadDocumentsInHierarchy();
         }
 
         private void LoadDocumentsInHierarchy() {
             foreach (var file in _hierarchy.GetProjectFiles()) {
-                DocumentManager documentManager;
+                Document documentManager;
 
                 try {
-                    documentManager = new DocumentManager(file);
+                    documentManager = new Document(file);
                     documentManager.Changed += Document_Changed;
 
                     _documents.Add(documentManager);
                 } catch (Exception ex) {
                     _messages.Add(new ProcessingMessage() {
                         MessageType = MessageType.Error,
-                        Message = $"Could not load file \"{file.FilePath}\""
+                        Message = $"Could not load file \"{file.FilePath}\" because '{ex.Message}'"
                     });
                 }
             }
         }
 
-        private void Document_Changed(DocumentManager documentManager) {
-            Changed();
+        private void Document_Changed(Document documentManager) {
+            OnChanged();
         }
 
         private void OnChanged() {

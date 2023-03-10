@@ -19,7 +19,7 @@ using VisualBasicDebugger.Managers;
 using VisualBasicDebugger.Managers.Editors;
 
 namespace VisualBasicDebugger.Forms.Editor {
-    public partial class FormEditor : Form, IMainView, IMainEditor, IMainExplorer {
+    public partial class FormEditor : Form, IMainView, ICodeView, IExplorerView {
         private string _projectPath;
         private Tuple<int, VisualBasic6Parser.StartRuleContext> cachedTree;
         private Task<VisualBasic6Parser.StartRuleContext> _stylingTask;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VisualBasicDebugger.SolutionStructure {
+namespace VisualBasicDebugger.Managers.Solution.SolutionStructure {
     public enum VisualBasicFileTypes {
         Form,
         Module,

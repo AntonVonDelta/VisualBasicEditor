@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace VisualBasicDebugger.Managers.SolutionStructure {
+namespace VisualBasicDebugger.Managers.Solution.SolutionStructure {
     public class ProjectFolder {
         List<ProjectFolder> _childFolders = new List<ProjectFolder>();
         string _folderPath;

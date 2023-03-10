@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using VisualBasicDebugger.SolutionStructure;
 
-namespace VisualBasicDebugger.Managers.SolutionStructure {
+namespace VisualBasicDebugger.Managers.Solution.SolutionStructure {
     public class Hierarchy {
         public ProjectFolder Root { get; set; }
 

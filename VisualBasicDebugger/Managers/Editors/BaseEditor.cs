@@ -7,10 +7,5 @@ using VisualBasicDebugger.Forms.Editor;
 
 namespace VisualBasicDebugger.Managers.Editors {
     public class BaseEditor {
-        private IMainView _view;
-
-        public BaseEditor(IMainView view) {
-            _view = view;
-        }
     }
 }

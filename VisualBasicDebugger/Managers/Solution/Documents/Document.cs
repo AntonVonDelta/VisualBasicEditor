@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VisualBasicDebugger.Managers.SolutionStructure;
+using VisualBasicDebugger.Managers.Solution.SolutionStructure;
 
-namespace VisualBasicDebugger.Managers {
-    public class DocumentManager {
+namespace VisualBasicDebugger.Managers.Solution.Documents {
+    public class Document {
         ProjectFile _file;
         private FileSystemWatcher _fileWatcher = new FileSystemWatcher();
         private string _originalData;
@@ -18,9 +18,9 @@ namespace VisualBasicDebugger.Managers {
         public string Data { get => _currentData; set => _currentData = value; }
         public bool PendingChanges { get => _currentData != _originalData; }
 
-        public event Action<DocumentManager> Changed;
+        public event Action<Document> Changed;
 
-        public DocumentManager(ProjectFile file) {
+        public Document(ProjectFile file) {
             _file = file;
             _fileWatcher.Path = FilePath;
             _fileWatcher.Changed += FileWatcher_Changed;
