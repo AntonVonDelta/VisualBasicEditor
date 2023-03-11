@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VisualBasicDebugger.Forms.Editor;
 using VisualBasicDebugger.Managers.Solution.SolutionStructure;
 using VisualBasicDebugger.Managers.Solution.Documents;
+using VisualBasicDebugger.Managers.Solution.CodeAnalysis;
 
 namespace VisualBasicDebugger.Managers.Solution {
     public class SolutionManager {

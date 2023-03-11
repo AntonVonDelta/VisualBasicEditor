@@ -26,16 +26,12 @@ namespace VisualBasicDebugger.Forms.Editor {
         private Task<VisualBasic6Parser.StartRuleContext> _completionTask;
         private TaskCompletionSource<bool> _closeFormTask;
 
-        private SolutionManager _solutionManager;
 
 
         public FormEditor(string projectPath) {
             InitializeComponent();
 
             _projectPath = projectPath;
-            _solutionManager = new SolutionManager(_projectPath);
-
-            _solutionManager.Changed += Solution_Changed;
         }
 
         #region Parsing

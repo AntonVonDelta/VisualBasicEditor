@@ -103,6 +103,7 @@
       <DependentUpon>FormWelcome.cs</DependentUpon>
     </Compile>
     <Compile Include="Managers\Solution\CodeAnalysis\CodeAnalysisManager.cs" />
+    <Compile Include="Managers\Solution\CodeAnalysis\VBDocumentAnalysis.cs" />
     <Compile Include="Managers\Solution\Documents\Document.cs" />
     <Compile Include="Managers\Editors\BaseEditor.cs" />
     <Compile Include="Managers\Editors\TextEditor.cs" />
@@ -128,6 +129,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Managers\Solution\SolutionStructure\VisualBasicFiles.cs" />
+    <Compile Include="Utils\ConsolePrint\ConsoleBlock.cs" />
+    <Compile Include="Utils\MerkleTree.cs" />
     <EmbeddedResource Include="Forms\Editor\FormEditor.resx">
       <DependentUpon>FormEditor.cs</DependentUpon>
     </EmbeddedResource>
