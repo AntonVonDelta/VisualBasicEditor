@@ -33,17 +33,24 @@ namespace UnitTests {
         [TestMethod]
         public void Test1() {
             MerkleTree<Element, Transform> tree = new MerkleTree<Element, Transform>(transform, reduce);
+            var e = new Element() { Name = "Test1" };
 
             tree.Add(new Element() { Name = "Test" });
+
+            //Console.WriteLine(tree.ToString());
+
             tree.Add(new Element() { Name = "Test1" });
             tree.Add(new Element() { Name = "Test2" });
             tree.Add(new Element() { Name = "Test3" });
-            tree.Add(new Element() { Name = "Test4" });
-            tree.Add(new Element() { Name = "Test5" });
-            tree.Add(new Element() { Name = "Test6" });
+            tree.Add(e);
+            tree.Add(new Element() { Name = "Test5555" });
+            Console.WriteLine(tree.ToString()+"\r\n");
+            Assert.AreEqual(32, tree.Result.Count);
 
-            Console.WriteLine(tree.Result.Count);
-
+            tree.UpdateEntry(e, new Element() { Name = "b" });
+            tree.Add(new Element() { Name = "Test678" });
+            Console.WriteLine(tree.ToString());
+            Assert.AreEqual(35, tree.Result.Count);
         }
     }
 }

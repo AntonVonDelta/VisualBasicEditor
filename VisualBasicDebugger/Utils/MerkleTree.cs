@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VisualBasicDebugger.Utils.ConsolePrint;
 
 namespace VisualBasicDebugger.Utils {
     public class MerkleTree<T, U> where U : class {
@@ -26,23 +27,25 @@ namespace VisualBasicDebugger.Utils {
                 _level = level;
             }
 
-            public override string ToString() {
+            public new ConsoleBlock ToString() {
                 int padding = 4;
-                string leftBranch;
-                string rightBranch;
-                string lowerLine;
+                string title = _data.ToString();
+                ConsoleBlock leftBranch;
+                ConsoleBlock rightBranch;
+                ConsoleBlock lowerLine;
 
-                if (IsLeaf) return _data.ToString();
+                if (IsLeaf) return new ConsoleBlock(_data.ToString());
 
                 leftBranch = _child1.ToString();
-                rightBranch = _child2?.ToString() ?? "<null>";
+                rightBranch = _child2?.ToString() ?? new ConsoleBlock("<null>");
 
                 // Total length should preferably be even
-                if ((leftBranch.Length + padding + rightBranch.Length) % 2 != 0) padding += 1;
+                if (title.Length % 2 != 0) padding += 1;
 
-                lowerLine=
+                lowerLine = ConsoleBlock.Concat(leftBranch, ConsoleBlock.Empty(padding, 1000), rightBranch);
+                lowerLine.AddTitle(_data.ToString());
 
-                return _data.ToString();
+                return lowerLine;
             }
         }
 
@@ -158,6 +161,7 @@ namespace VisualBasicDebugger.Utils {
                 // on the left branch. Search for one then
                 leftBranchFreeEntry = FindFreeEntry(currentNode.Child1);
                 if (leftBranchFreeEntry == null) return currentNode;
+                else return leftBranchFreeEntry;
             }
         }
 
@@ -214,8 +218,8 @@ namespace VisualBasicDebugger.Utils {
             return newNode;
         }
 
-        private override string ToString() {
-
+        public override string ToString() {
+            return _root.ToString().ToString();
         }
     }
 }
