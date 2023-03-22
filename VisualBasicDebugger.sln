@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualBasicDebugger", "Visu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{5E23431D-1E28-4E64-A514-0B60A4B96860}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imperium", "Imperium\Imperium.csproj", "{E9D9FB78-81C5-41EF-B109-AB545079D0CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{5E23431D-1E28-4E64-A514-0B60A4B96860}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E23431D-1E28-4E64-A514-0B60A4B96860}.Release|x64.ActiveCfg = Release|Any CPU
 		{5E23431D-1E28-4E64-A514-0B60A4B96860}.Release|x64.Build.0 = Release|Any CPU
+		{E9D9FB78-81C5-41EF-B109-AB545079D0CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9D9FB78-81C5-41EF-B109-AB545079D0CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9D9FB78-81C5-41EF-B109-AB545079D0CF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E9D9FB78-81C5-41EF-B109-AB545079D0CF}.Debug|x64.Build.0 = Debug|Any CPU
+		{E9D9FB78-81C5-41EF-B109-AB545079D0CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9D9FB78-81C5-41EF-B109-AB545079D0CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9D9FB78-81C5-41EF-B109-AB545079D0CF}.Release|x64.ActiveCfg = Release|Any CPU
+		{E9D9FB78-81C5-41EF-B109-AB545079D0CF}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

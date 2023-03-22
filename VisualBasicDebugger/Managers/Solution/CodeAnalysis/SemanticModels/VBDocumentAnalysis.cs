@@ -5,12 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VisualBasicDebugger.Managers.Solution.Documents;
 
-namespace VisualBasicDebugger.Managers.Solution.CodeAnalysis {
+namespace VisualBasicDebugger.Managers.Solution.CodeAnalysis.SemanticModels {
     public class VBDocumentAnalysis {
-        private readonly VBDocument _document;
-
-        public VBDocumentAnalysis(VBDocument document) {
-            _document = document;
-        }
+        public List<Function> Functions { get; set; }
+        public List<Variable> Variables { get; set; }
     }
 }

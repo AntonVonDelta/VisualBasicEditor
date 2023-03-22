@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace VisualBasicDebugger.Managers.Solution.CodeAnalysis.SemanticModels {
-    public class Function {
+    public class ObjectType {
         public string Name { get; set; }
 
     }
