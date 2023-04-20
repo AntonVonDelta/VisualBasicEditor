@@ -103,6 +103,7 @@
       <DependentUpon>FormWelcome.cs</DependentUpon>
     </Compile>
     <Compile Include="Managers\Solution\CodeAnalysis\CodeAnalysisManager.cs" />
+    <Compile Include="Managers\Solution\CodeAnalysis\SemanticModels\AccessModifierType.cs" />
     <Compile Include="Managers\Solution\CodeAnalysis\SemanticModels\DataType.cs" />
     <Compile Include="Managers\Solution\CodeAnalysis\SemanticModels\ObjectType.cs" />
     <Compile Include="Managers\Solution\CodeAnalysis\SemanticModels\Function.cs" />

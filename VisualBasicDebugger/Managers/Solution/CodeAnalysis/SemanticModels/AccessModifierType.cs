@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace VisualBasicDebugger.Managers.Solution.CodeAnalysis.SemanticModels {
-    public class UnknownObjectType : ObjectType {
-        public UnknownObjectType(string name) {
-            Name = name;
-        }
+    public enum AccessModifierType {
+        Public,
+        Private
     }
 }
