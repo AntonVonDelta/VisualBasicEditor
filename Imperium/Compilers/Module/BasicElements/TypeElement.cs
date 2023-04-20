@@ -1,4 +1,5 @@
 ﻿using Imperium.Analyzers.Module.SymbolTable;
+using Imperium.Compilers.Module.SymbolTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Imperium.Compilers.Module.BasicElements {
-    class TypeElement {
+    public class TypeElement {
         struct ReferenceBinding {
             public string name;
             public SymbolReference reference;
@@ -16,6 +17,7 @@ namespace Imperium.Compilers.Module.BasicElements {
         private readonly string _name;
         private readonly List<ReferenceBinding> _members = new List<ReferenceBinding>();
 
+        public Modifier Modifer => _modifier;
         public string Name => _name;
 
         public TypeElement(Modifier modifier, string name) {

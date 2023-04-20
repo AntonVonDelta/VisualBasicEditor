@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Imperium.Compilers.Module {
     public class ModuleUnit {
-        private readonly ModuleSymbolsTable _symbolsTable = new ModuleSymbolsTable();
+        private readonly SymbolsTable _symbolsTable = new SymbolsTable();
 
         public ModuleUnit() {
 

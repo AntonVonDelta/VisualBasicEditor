@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Imperium.Compilers.Module.SymbolTable {
     public class SymbolReference {
-        private readonly ModuleSymbolsTable _table;
+        private readonly SymbolsTable _table;
         private readonly int _reference;
 
-        public SymbolReference(ModuleSymbolsTable table, int reference) {
+        public SymbolReference(SymbolsTable table, int reference) {
             _table = table;
             _reference = reference;
         }

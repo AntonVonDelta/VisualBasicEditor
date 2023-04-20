@@ -41,18 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analyzers\TypeAnalysis.cs" />
+    <Compile Include="Analyzers\TypeDefinitionAnalyzer.cs" />
     <Compile Include="Compilers\Module\BasicElements\TypeElement.cs" />
     <Compile Include="Compilers\Module\BasicElements\VariableElement.cs" />
+    <Compile Include="Compilers\Module\SymbolTable\ICompiledTable.cs" />
     <Compile Include="Compilers\Module\SymbolTable\Modifier.cs" />
-    <Compile Include="Compilers\Module\SymbolTable\ModuleSymbolsTable.cs" />
+    <Compile Include="Compilers\Module\SymbolTable\SymbolsTable.cs" />
     <Compile Include="Compilers\Module\ModuleUnit.cs" />
     <Compile Include="Compilers\Module\SymbolTable\SymbolReference.cs" />
     <Compile Include="Compilers\Module\SymbolTable\SymbolType.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Exceptions\SymbolsSameNameDifferentTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Analyzers\" />
     <Folder Include="Compilers\CompileUnit\" />
     <Folder Include="SemanticModels\" />
   </ItemGroup>
