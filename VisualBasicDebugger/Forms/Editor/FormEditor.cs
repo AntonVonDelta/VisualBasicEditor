@@ -19,7 +19,7 @@ using VisualBasicDebugger.Managers;
 using VisualBasicDebugger.Managers.Editors;
 
 namespace VisualBasicDebugger.Forms.Editor {
-    public partial class FormEditor : Form, IMainView, ICodeView, IExplorerView {
+    public partial class FormEditor : Form/*, IMainView, ICodeView, IExplorerView*/ {
         private string _projectPath;
         private Tuple<int, VisualBasic6Parser.StartRuleContext> cachedTree;
         private Task<VisualBasic6Parser.StartRuleContext> _stylingTask;
@@ -34,250 +34,250 @@ namespace VisualBasicDebugger.Forms.Editor {
             _projectPath = projectPath;
         }
 
-        #region Parsing
-        private Task<bool> ShouldCancelClose() {
-            if (_closeFormTask == null) _closeFormTask = new TaskCompletionSource<bool>();
-            return _closeFormTask.Task;
-        }
+        //#region Parsing
+        //private Task<bool> ShouldCancelClose() {
+        //    if (_closeFormTask == null) _closeFormTask = new TaskCompletionSource<bool>();
+        //    return _closeFormTask.Task;
+        //}
 
-        private void SetStyles() {
-            // Control statements
-            mainTextEditor.Styles[1].ForeColor = Color.Blue;
+        //private void SetStyles() {
+        //    // Control statements
+        //    mainTextEditor.Styles[1].ForeColor = Color.Blue;
 
-            // Variables
-            mainTextEditor.Styles[2].ForeColor = Color.FromArgb(33, 170, 216);
+        //    // Variables
+        //    mainTextEditor.Styles[2].ForeColor = Color.FromArgb(33, 170, 216);
 
-            // Function calls
-            mainTextEditor.Styles[3].ForeColor = Color.SaddleBrown;
+        //    // Function calls
+        //    mainTextEditor.Styles[3].ForeColor = Color.SaddleBrown;
 
-            // Unused variable indicator
-            mainTextEditor.Indicators[0].Style = IndicatorStyle.StraightBox;
-            mainTextEditor.Indicators[0].ForeColor = Color.Brown;
+        //    // Unused variable indicator
+        //    mainTextEditor.Indicators[0].Style = IndicatorStyle.StraightBox;
+        //    mainTextEditor.Indicators[0].ForeColor = Color.Brown;
 
-            mainTextEditor.MouseDwellTime = 400;
-            mainTextEditor.Styles[Style.CallTip].SizeF = 8.25f;
-            mainTextEditor.Styles[Style.CallTip].ForeColor = SystemColors.InfoText;
-            mainTextEditor.Styles[Style.CallTip].BackColor = SystemColors.Info;
-        }
+        //    mainTextEditor.MouseDwellTime = 400;
+        //    mainTextEditor.Styles[Style.CallTip].SizeF = 8.25f;
+        //    mainTextEditor.Styles[Style.CallTip].ForeColor = SystemColors.InfoText;
+        //    mainTextEditor.Styles[Style.CallTip].BackColor = SystemColors.Info;
+        //}
 
-        private async Task<VisualBasic6Parser.StartRuleContext> GetTree(string input) {
-            if (cachedTree != null && cachedTree.Item1 == input.GetHashCode()) return cachedTree.Item2;
+        //private async Task<VisualBasic6Parser.StartRuleContext> GetTree(string input) {
+        //    if (cachedTree != null && cachedTree.Item1 == input.GetHashCode()) return cachedTree.Item2;
 
-            try {
-                var charStream = new CaseInsensitiveStream(input);
-                var lexer = new VisualBasic6Lexer(charStream);
-                CommonTokenStream tokenStream;
-                VisualBasic6Parser.StartRuleContext tree;
-                VisualBasic6Parser parser;
+        //    try {
+        //        var charStream = new CaseInsensitiveStream(input);
+        //        var lexer = new VisualBasic6Lexer(charStream);
+        //        CommonTokenStream tokenStream;
+        //        VisualBasic6Parser.StartRuleContext tree;
+        //        VisualBasic6Parser parser;
 
-                tokenStream = new CommonTokenStream(lexer);
-                parser = new VisualBasic6Parser(tokenStream);
+        //        tokenStream = new CommonTokenStream(lexer);
+        //        parser = new VisualBasic6Parser(tokenStream);
 
-                tree = await Task.Run(() => {
-                    return parser.startRule();
-                });
+        //        tree = await Task.Run(() => {
+        //            return parser.startRule();
+        //        });
 
-                cachedTree = new Tuple<int, VisualBasic6Parser.StartRuleContext>(input.GetHashCode(), tree);
+        //        cachedTree = new Tuple<int, VisualBasic6Parser.StartRuleContext>(input.GetHashCode(), tree);
 
-                return tree;
-            } catch { }
+        //        return tree;
+        //    } catch { }
 
-            return null;
-        }
+        //    return null;
+        //}
 
-        private async void StartCodeAnalysis() {
-            while (_closeFormTask == null) {
-                string input;
-                VisualBasic6Parser.StartRuleContext tree;
+        //private async void StartCodeAnalysis() {
+        //    while (_closeFormTask == null) {
+        //        string input;
+        //        VisualBasic6Parser.StartRuleContext tree;
 
-                input = mainTextEditor.Text;
-                tree = await GetTree(input);
-                if (tree == null) return;
+        //        input = mainTextEditor.Text;
+        //        tree = await GetTree(input);
+        //        if (tree == null) return;
 
-                // Process data for unused variables
-                mainTextEditor.IndicatorClearRange(0, mainTextEditor.TextLength);
+        //        // Process data for unused variables
+        //        mainTextEditor.IndicatorClearRange(0, mainTextEditor.TextLength);
 
-                try {
+        //        try {
 
-                    var parserTreeWalker = new ParseTreeWalker();
-                    var unusedVariablesListener = new UnusedVariableListener();
-                    parserTreeWalker.Walk(unusedVariablesListener, tree);
+        //            var parserTreeWalker = new ParseTreeWalker();
+        //            var unusedVariablesListener = new UnusedVariableListener();
+        //            parserTreeWalker.Walk(unusedVariablesListener, tree);
 
-                    if (unusedVariablesListener.Result != null) {
-                        foreach (var item in unusedVariablesListener.Result) {
-                            mainTextEditor.IndicatorCurrent = 0;
-                            mainTextEditor.IndicatorFillRange(item.StartPosition, item.EndPosition - item.StartPosition + 1);
-                        }
-                    }
-                } catch {
+        //            if (unusedVariablesListener.Result != null) {
+        //                foreach (var item in unusedVariablesListener.Result) {
+        //                    mainTextEditor.IndicatorCurrent = 0;
+        //                    mainTextEditor.IndicatorFillRange(item.StartPosition, item.EndPosition - item.StartPosition + 1);
+        //                }
+        //            }
+        //        } catch {
 
-                }
+        //        }
 
-                while (_closeFormTask == null) {
-                    await Task.Delay(2000);
-                    if (input != mainTextEditor.Text) break;
-                }
-            }
+        //        while (_closeFormTask == null) {
+        //            await Task.Delay(2000);
+        //            if (input != mainTextEditor.Text) break;
+        //        }
+        //    }
 
-            _closeFormTask.SetResult(false);
-        }
+        //    _closeFormTask.SetResult(false);
+        //}
 
-        private async void StartCodeStyling(StyleNeededEventArgs eventArgs) {
-            var startLine = mainTextEditor.LineFromPosition(mainTextEditor.GetEndStyled());
-            var stopLine = mainTextEditor.LineFromPosition(eventArgs.Position);
-            VisualBasic6Parser.StartRuleContext tree;
-            ColoringListener coloringListener = new ColoringListener(mainTextEditor, startLine, stopLine);
+        //private async void StartCodeStyling(StyleNeededEventArgs eventArgs) {
+        //    var startLine = mainTextEditor.LineFromPosition(mainTextEditor.GetEndStyled());
+        //    var stopLine = mainTextEditor.LineFromPosition(eventArgs.Position);
+        //    VisualBasic6Parser.StartRuleContext tree;
+        //    ColoringListener coloringListener = new ColoringListener(mainTextEditor, startLine, stopLine);
 
-            if (_stylingTask != null && !_stylingTask.IsCompleted) return;
+        //    if (_stylingTask != null && !_stylingTask.IsCompleted) return;
 
-            _stylingTask = GetTree(mainTextEditor.Text);
-            tree = await _stylingTask;
+        //    _stylingTask = GetTree(mainTextEditor.Text);
+        //    tree = await _stylingTask;
 
-            if (tree == null) return;
+        //    if (tree == null) return;
 
-            try {
-                var parserTreeWalker = new ParseTreeWalker();
+        //    try {
+        //        var parserTreeWalker = new ParseTreeWalker();
 
-                // Apply our coloring
-                parserTreeWalker.Walk(coloringListener, tree);
-            } catch { }
-        }
+        //        // Apply our coloring
+        //        parserTreeWalker.Walk(coloringListener, tree);
+        //    } catch { }
+        //}
 
-        private async void StartCompletion() {
-            VisualBasic6Parser.StartRuleContext tree;
-            VariablesListener variablesListener = new VariablesListener();
-            List<string> allScopesVariables;
-            Regex lastTypedWord = new Regex(@"\w+$");
-            int lineToCursorLength = mainTextEditor.CurrentPosition - mainTextEditor.Lines[mainTextEditor.CurrentLine].Position;
-            string lineUptoCursor = mainTextEditor.GetTextRange(mainTextEditor.Lines[mainTextEditor.CurrentLine].Position, lineToCursorLength);
-            Match typedWordMatch = lastTypedWord.Match(lineUptoCursor);
-            string typedWord;
+        //private async void StartCompletion() {
+        //    VisualBasic6Parser.StartRuleContext tree;
+        //    VariablesListener variablesListener = new VariablesListener();
+        //    List<string> allScopesVariables;
+        //    Regex lastTypedWord = new Regex(@"\w+$");
+        //    int lineToCursorLength = mainTextEditor.CurrentPosition - mainTextEditor.Lines[mainTextEditor.CurrentLine].Position;
+        //    string lineUptoCursor = mainTextEditor.GetTextRange(mainTextEditor.Lines[mainTextEditor.CurrentLine].Position, lineToCursorLength);
+        //    Match typedWordMatch = lastTypedWord.Match(lineUptoCursor);
+        //    string typedWord;
 
-            if (_completionTask != null && !_completionTask.IsCompleted) return;
-            if (!typedWordMatch.Success) return;
-            typedWord = typedWordMatch.Value;
+        //    if (_completionTask != null && !_completionTask.IsCompleted) return;
+        //    if (!typedWordMatch.Success) return;
+        //    typedWord = typedWordMatch.Value;
 
-            _completionTask = GetTree(mainTextEditor.Text);
-            tree = await _stylingTask;
+        //    _completionTask = GetTree(mainTextEditor.Text);
+        //    tree = await _stylingTask;
 
-            if (tree == null) return;
+        //    if (tree == null) return;
 
-            try {
-                var parserTreeWalker = new ParseTreeWalker();
+        //    try {
+        //        var parserTreeWalker = new ParseTreeWalker();
 
-                parserTreeWalker.Walk(variablesListener, tree);
+        //        parserTreeWalker.Walk(variablesListener, tree);
 
-            } catch { return; }
+        //    } catch { return; }
 
-            allScopesVariables = variablesListener.Result;
-            if (allScopesVariables.Count == 0) return;
+        //    allScopesVariables = variablesListener.Result;
+        //    if (allScopesVariables.Count == 0) return;
 
-            var similarWords = allScopesVariables.Where(el => el.ToLower().StartsWith(typedWord.ToLower())).ToList();
-            mainTextEditor.AutoCShow(typedWord.Length, string.Join(" ", similarWords));
-        }
+        //    var similarWords = allScopesVariables.Where(el => el.ToLower().StartsWith(typedWord.ToLower())).ToList();
+        //    mainTextEditor.AutoCShow(typedWord.Length, string.Join(" ", similarWords));
+        //}
 
-        private void SetChangeHistory(int changeHistory) {
-            // This is needed for history changes to work
-            mainTextEditor.EmptyUndoBuffer();
+        //private void SetChangeHistory(int changeHistory) {
+        //    // This is needed for history changes to work
+        //    mainTextEditor.EmptyUndoBuffer();
 
-            mainTextEditor.DirectMessage(2780, new IntPtr(changeHistory), IntPtr.Zero);
-        }
+        //    mainTextEditor.DirectMessage(2780, new IntPtr(changeHistory), IntPtr.Zero);
+        //}
 
-        private string GetUnusedVariableAtPosition(int position) {
-            var indicator = mainTextEditor.Indicators[0];
-            var bitmapFlag = 1 << indicator.Index;
-            var bitmap = mainTextEditor.IndicatorAllOnFor(position);
-            var hasIndicator = ((bitmapFlag & bitmap) == bitmapFlag);
+        //private string GetUnusedVariableAtPosition(int position) {
+        //    var indicator = mainTextEditor.Indicators[0];
+        //    var bitmapFlag = 1 << indicator.Index;
+        //    var bitmap = mainTextEditor.IndicatorAllOnFor(position);
+        //    var hasIndicator = ((bitmapFlag & bitmap) == bitmapFlag);
 
-            if (hasIndicator) {
-                var startPos = indicator.Start(position);
-                var endPos = indicator.End(position);
+        //    if (hasIndicator) {
+        //        var startPos = indicator.Start(position);
+        //        var endPos = indicator.End(position);
 
-                var text = mainTextEditor.GetTextRange(startPos, endPos - startPos).Trim();
-                return text;
-            }
+        //        var text = mainTextEditor.GetTextRange(startPos, endPos - startPos).Trim();
+        //        return text;
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
-        private void UpdateLineNumbers() {
-            // Did the number of characters in the line number display change?
-            // i.e. nnn VS nn, or nnnn VS nn, etc...
-            var maxLineNumberCharLength = mainTextEditor.Lines.Count.ToString().Length;
+        //private void UpdateLineNumbers() {
+        //    // Did the number of characters in the line number display change?
+        //    // i.e. nnn VS nn, or nnnn VS nn, etc...
+        //    var maxLineNumberCharLength = mainTextEditor.Lines.Count.ToString().Length;
 
-            // Calculate the width required to display the last line number
-            // and include some padding for good measure.
-            const int padding = 2;
+        //    // Calculate the width required to display the last line number
+        //    // and include some padding for good measure.
+        //    const int padding = 2;
 
-            mainTextEditor.Margins[0].Width = mainTextEditor.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
-        }
+        //    mainTextEditor.Margins[0].Width = mainTextEditor.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
+        //}
 
-        private void PopulateTabs() {
-            List<string> extensionsWhiteList = new List<string>() { ".vbp", ".frm", ".vbg", ".bas" };
+        //private void PopulateTabs() {
+        //    List<string> extensionsWhiteList = new List<string>() { ".vbp", ".frm", ".vbg", ".bas" };
 
-            foreach (var file in Directory.GetFiles(_projectPath)) {
-                TabPage documentTitleTab;
+        //    foreach (var file in Directory.GetFiles(_projectPath)) {
+        //        TabPage documentTitleTab;
 
-                if (!extensionsWhiteList.Contains(Path.GetExtension(file))) continue;
+        //        if (!extensionsWhiteList.Contains(Path.GetExtension(file))) continue;
 
-                documentTitleTab = new TabPage(Path.GetFileName(file));
-                documentTitleTab.Tag = file;
-                tabDocuments.TabPages.Add(documentTitleTab);
-            }
-        }
+        //        documentTitleTab = new TabPage(Path.GetFileName(file));
+        //        documentTitleTab.Tag = file;
+        //        tabDocuments.TabPages.Add(documentTitleTab);
+        //    }
+        //}
 
-        private void LoadDocumentFromPath(string filePath) {
-            using (var stream = new StreamReader(filePath)) {
-                mainTextEditor.Text = stream.ReadToEnd();
-            }
-        }
-        #endregion
+        //private void LoadDocumentFromPath(string filePath) {
+        //    using (var stream = new StreamReader(filePath)) {
+        //        mainTextEditor.Text = stream.ReadToEnd();
+        //    }
+        //}
+        //#endregion
 
-        #region SolutionEvents
-        private void Solution_Changed() {
-            MessageBox.Show("The solution was modified from outside. Do you want to reload ");
-        }
-        #endregion
+        //#region SolutionEvents
+        //private void Solution_Changed() {
+        //    MessageBox.Show("The solution was modified from outside. Do you want to reload ");
+        //}
+        //#endregion
 
         private void Form1_Load(object sender, EventArgs e) {
-            SetStyles();
-            StartCodeAnalysis();
-            UpdateLineNumbers();
-            SetChangeHistory(3);
-            PopulateTabs();
+            //SetStyles();
+            //StartCodeAnalysis();
+            //UpdateLineNumbers();
+            //SetChangeHistory(3);
+            //PopulateTabs();
 
-            if (tabDocuments.TabPages.Count != 0) {
-                LoadDocumentFromPath((string)tabDocuments.TabPages[0].Tag);
-            }
+            //if (tabDocuments.TabPages.Count != 0) {
+            //    LoadDocumentFromPath((string)tabDocuments.TabPages[0].Tag);
+            //}
 
-            mainTextEditor.AutoCIgnoreCase = true;
-            mainTextEditor.Margins[1].Width = 20;
+            //mainTextEditor.AutoCIgnoreCase = true;
+            //mainTextEditor.Margins[1].Width = 20;
 
-            mainTextEditor.StyleNeeded += (object eventSender, StyleNeededEventArgs eventArgs) => {
-                StartCodeStyling(eventArgs);
-            };
+            //mainTextEditor.StyleNeeded += (object eventSender, StyleNeededEventArgs eventArgs) => {
+            //    StartCodeStyling(eventArgs);
+            //};
 
-            mainTextEditor.DwellStart += (object eventSender, DwellEventArgs eventArgs) => {
-                if (GetUnusedVariableAtPosition(eventArgs.Position) != null)
-                    mainTextEditor.CallTipShow(eventArgs.Position, "Unused variable");
-            };
+            //mainTextEditor.DwellStart += (object eventSender, DwellEventArgs eventArgs) => {
+            //    if (GetUnusedVariableAtPosition(eventArgs.Position) != null)
+            //        mainTextEditor.CallTipShow(eventArgs.Position, "Unused variable");
+            //};
 
-            mainTextEditor.DwellEnd += (object eventSender, DwellEventArgs eventArgs) => {
-                mainTextEditor.CallTipCancel();
-            };
+            //mainTextEditor.DwellEnd += (object eventSender, DwellEventArgs eventArgs) => {
+            //    mainTextEditor.CallTipCancel();
+            //};
 
 
-            mainTextEditor.TextChanged += (object eventSender, EventArgs eventArgs) => {
-                UpdateLineNumbers();
-            };
+            //mainTextEditor.TextChanged += (object eventSender, EventArgs eventArgs) => {
+            //    UpdateLineNumbers();
+            //};
 
-            mainTextEditor.ZoomChanged += (object eventSender, EventArgs eventArgs) => {
-                UpdateLineNumbers();
-            };
+            //mainTextEditor.ZoomChanged += (object eventSender, EventArgs eventArgs) => {
+            //    UpdateLineNumbers();
+            //};
 
-            mainTextEditor.CharAdded += (object eventSender, CharAddedEventArgs eventArgs) => {
-                StartCompletion();
-            };
+            //mainTextEditor.CharAdded += (object eventSender, CharAddedEventArgs eventArgs) => {
+            //    StartCompletion();
+            //};
         }
 
         private static string GetIndexesForList(List<TraceVariableData> list) {
@@ -290,54 +290,54 @@ namespace VisualBasicDebugger.Forms.Editor {
         }
 
         private async void FormEditor_FormClosing(object sender, FormClosingEventArgs e) {
-            var cancelCloseTask = ShouldCancelClose();
+            //var cancelCloseTask = ShouldCancelClose();
 
-            if (cancelCloseTask.IsCompleted) {
-                if (await cancelCloseTask) e.Cancel = true;
-                return;
-            }
+            //if (cancelCloseTask.IsCompleted) {
+            //    if (await cancelCloseTask) e.Cancel = true;
+            //    return;
+            //}
 
-            e.Cancel = true;
+            //e.Cancel = true;
 
-            if (!await cancelCloseTask) {
-                Close();
-            }
+            //if (!await cancelCloseTask) {
+            //    Close();
+            //}
         }
 
         private void tabDocuments_Selected(object sender, TabControlEventArgs e) {
-            LoadDocumentFromPath((string)e.TabPage.Tag);
+            //LoadDocumentFromPath((string)e.TabPage.Tag);
         }
 
         private async void btnGenerateTraceCode_Click(object sender, EventArgs e) {
-            var input = mainTextEditor.Text;
-            TracerVisitor tracerVisitor;
-            VisualBasic6Parser.StartRuleContext tree;
-            List<string> lines = input.Split('\n').ToList();
+            //var input = mainTextEditor.Text;
+            //TracerVisitor tracerVisitor;
+            //VisualBasic6Parser.StartRuleContext tree;
+            //List<string> lines = input.Split('\n').ToList();
 
-            tree = await GetTree(mainTextEditor.Text);
-            tracerVisitor = new TracerVisitor();
-            tracerVisitor.Visit(tree);
+            //tree = await GetTree(mainTextEditor.Text);
+            //tracerVisitor = new TracerVisitor();
+            //tracerVisitor.Visit(tree);
 
-            foreach (var functionTrace in tracerVisitor.Result) {
-                var functionName = functionTrace.ParentFunction.Name;
+            //foreach (var functionTrace in tracerVisitor.Result) {
+            //    var functionName = functionTrace.ParentFunction.Name;
 
-                for (int i = functionTrace.Traces.Count - 1; i >= 0; i--) {
-                    var traceLine = functionTrace.Traces[i];
-                    var lineNr = traceLine.Line;
-                    string trace;
+            //    for (int i = functionTrace.Traces.Count - 1; i >= 0; i--) {
+            //        var traceLine = functionTrace.Traces[i];
+            //        var lineNr = traceLine.Line;
+            //        string trace;
 
-                    if (traceLine.VariableTraces.Count == 0) {
-                        trace = $"\tLog \"[{functionName}:{lineNr + i + 1}]\", \"\"";
-                    } else {
-                        var variableNames = string.Join(", ", traceLine.VariableTraces.Select(el => el.Name));
-                        trace = $"\tLog \"[{functionName}:{lineNr + i + 1}]\", \"{GetIndexesForList(traceLine.VariableTraces)}\",{variableNames}";
-                    }
+            //        if (traceLine.VariableTraces.Count == 0) {
+            //            trace = $"\tLog \"[{functionName}:{lineNr + i + 1}]\", \"\"";
+            //        } else {
+            //            var variableNames = string.Join(", ", traceLine.VariableTraces.Select(el => el.Name));
+            //            trace = $"\tLog \"[{functionName}:{lineNr + i + 1}]\", \"{GetIndexesForList(traceLine.VariableTraces)}\",{variableNames}";
+            //        }
 
-                    lines.Insert(lineNr - 1, trace);
-                }
-            }
+            //        lines.Insert(lineNr - 1, trace);
+            //    }
+            //}
 
-            mainTextEditor.Text = string.Join("\n", lines);
+            //mainTextEditor.Text = string.Join("\n", lines);
         }
 
         private void tabView_SelectedIndexChanged(object sender, EventArgs e) {
@@ -348,8 +348,8 @@ namespace VisualBasicDebugger.Forms.Editor {
             }
         }
 
-        public void SetEditor(Scintilla editor) {
-            mainTextEditor = editor;
-        }
+        //public void SetEditor(Scintilla editor) {
+        //    mainTextEditor = editor;
+        //}
     }
 }

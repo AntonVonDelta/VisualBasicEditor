@@ -1,5 +1,4 @@
-﻿using Imperium.Analyzers.Module.SymbolTable;
-using Imperium.Compilers.Module.SymbolTable;
+﻿using Imperium.Compilers.Module.SymbolTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;

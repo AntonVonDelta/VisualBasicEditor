@@ -16,7 +16,7 @@ namespace VisualBasicDebugger.Managers.Solution.CodeAnalysis.SemanticModels {
         }
 
         public void AddParameter(Variable variable) {
-            List<Variable> clonedParameters=_parameters.Select()
+            //List<Variable> clonedParameters=_parameters.Select()
             throw new NotImplementedException();
         }
 

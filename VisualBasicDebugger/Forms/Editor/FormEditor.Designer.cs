@@ -28,7 +28,6 @@ namespace VisualBasicDebugger.Forms.Editor {
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormEditor));
             this.tableLayoutPrincipal = new System.Windows.Forms.TableLayoutPanel();
-            this.mainTextEditor = new ScintillaNET.Scintilla();
             this.tabDocuments = new System.Windows.Forms.TabControl();
             this.tableLayoutSideRight = new System.Windows.Forms.TableLayoutPanel();
             this.btnGenerateTraceCode = new System.Windows.Forms.Button();
@@ -47,7 +46,6 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.tableLayoutPrincipal.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPrincipal.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tableLayoutPrincipal.Controls.Add(this.tabView, 0, 2);
-            this.tableLayoutPrincipal.Controls.Add(this.mainTextEditor, 0, 1);
             this.tableLayoutPrincipal.Controls.Add(this.tabDocuments, 0, 0);
             this.tableLayoutPrincipal.Controls.Add(this.tableLayoutSideRight, 1, 0);
             this.tableLayoutPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -59,25 +57,6 @@ namespace VisualBasicDebugger.Forms.Editor {
             this.tableLayoutPrincipal.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPrincipal.Size = new System.Drawing.Size(1253, 716);
             this.tableLayoutPrincipal.TabIndex = 8;
-            // 
-            // mainTextEditor
-            // 
-            this.mainTextEditor.AutoCMaxHeight = 9;
-            this.mainTextEditor.BiDirectionality = ScintillaNET.BiDirectionalDisplayType.Disabled;
-            this.mainTextEditor.CaretLineBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.mainTextEditor.CaretLineFrame = 1;
-            this.mainTextEditor.CaretLineVisible = true;
-            this.mainTextEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainTextEditor.LexerName = null;
-            this.mainTextEditor.Location = new System.Drawing.Point(3, 29);
-            this.mainTextEditor.Name = "mainTextEditor";
-            this.mainTextEditor.ScrollWidth = 345;
-            this.mainTextEditor.Size = new System.Drawing.Size(1097, 461);
-            this.mainTextEditor.TabIndents = true;
-            this.mainTextEditor.TabIndex = 12;
-            this.mainTextEditor.Text = resources.GetString("mainTextEditor.Text");
-            this.mainTextEditor.UseRightToLeftReadingLayout = false;
-            this.mainTextEditor.WrapMode = ScintillaNET.WrapMode.None;
             // 
             // tabDocuments
             // 
@@ -180,7 +159,6 @@ namespace VisualBasicDebugger.Forms.Editor {
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPrincipal;
         private System.Windows.Forms.TabControl tabDocuments;
-        private Scintilla mainTextEditor;
         private System.Windows.Forms.TableLayoutPanel tableLayoutSideRight;
         private System.Windows.Forms.Button btnGenerateTraceCode;
         private System.Windows.Forms.TabControl tabView;
